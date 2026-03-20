@@ -1,6 +1,15 @@
-<p align="center">
-  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
-</p>
+<table align="center">
+  <tr>
+    <td>
+      <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
+    </td>
+    <td>
+      <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" />
+      <br />
+      <img src="assets/icons/ai矩连.svg" alt="AI矩连" width="88" />
+    </td>
+  </tr>
+</table>
 
 <p align="center">
   <strong>English</strong> | <a href="./README_cn.md">中文</a>

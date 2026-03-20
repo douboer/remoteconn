@@ -1,6 +1,15 @@
-<p align="center">
-  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
-</p>
+<table align="center">
+  <tr>
+    <td>
+      <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
+    </td>
+    <td>
+      <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" />
+      <br />
+      <img src="assets/icons/ai矩连.svg" alt="AI矩连" width="88" />
+    </td>
+  </tr>
+</table>
 
 <p align="center">
   <a href="./README.md">English</a> | <strong>中文</strong>
@@ -175,6 +184,65 @@
   - 根 README、发布说明、小程序 README、对齐审计、配置实现方案、闪念实现基线和 parity 机读清单统一更新；
   - 新增 SSH 跳转链路加密分层图，作为跳板机能力说明；
   - 原 `v2.4.0` 说明已并入当前 `v2.6.0`，统一作为当前“Web + 小程序”共同对外口径。
+
+## 操作说明
+
+这一节复用项目介绍中已经标注好的五张截图，按同样的视觉分组说明主流程，方便直接在 README 里理解整体使用路径。
+
+如果需要更适合手机竖屏阅读的版本，见 [移动端操作说明](./docs/mobile-operation-guide-2026-03-20.md)。
+
+### 1. 服务器列表与配置
+
+![服务器列表与配置](./snapshots/guide-group-01-servers-config-annotated.png)
+
+1. 首页默认打开服务器列表，这里是整个产品的主入口。
+2. 顶部工具栏用于新增、删除、选择和搜索服务器。
+3. 服务器卡片主体进入配置页，右侧快捷操作可用于复制配置、启动 AI 或直接连接。
+4. 底部导航用于切换终端、日志、记录、设置和关于页面。
+5. 配置页用于填写基础连接字段、认证方式和项目目录。
+6. `AI Working Directory` 用于定义 AI 启动时默认进入的项目上下文，是协作链路里的关键字段。
+7. 如果目标主机需要经过跳板机访问，可以在同页补全跳板机字段和它自己的认证信息。
+8. 推荐顺序是先保存服务器配置，再发起连接。
+
+### 2. 终端、AI 与连接诊断
+
+![终端、AI 与连接诊断](./snapshots/guide-group-02-terminal-status-annotated.png)
+
+1. 进入终端后可以直接执行 shell 命令，也可以从左上角切换到 `Codex` 等 AI 工作流。
+2. 顶部状态栏会持续显示连接状态、时延和会话概览，是移动端排障的主反馈区。
+3. 点击 `Connected` 会打开会话详情面板，查看当前目标主机、连接状态和工作目录。
+4. 点击 `Latency` 会打开诊断面板，查看网关响应和网络时延走势，用于判断链路质量。
+
+### 3. 语音输入与快捷面板
+
+![语音输入与快捷面板](./snapshots/guide-group-03-voice-shortcuts-annotated.png)
+
+1. 终端页底部的 `voice` 按钮会打开语音输入面板，支持“先说出来，再决定怎么处理”的输入方式。
+2. 语音草稿可以直接发送到终端，也可以带上分类标签保存为记录。
+3. 底部的 `keyboard` 按钮会打开快捷键面板，补足手机上缺失的终端控制键。
+4. 右侧快捷面板提供方向键、`Esc`、`Ctrl+C`、`Tab` 等高频控制，降低手机输入成本。
+
+### 4. 设置中心
+
+![设置中心](./snapshots/guide-group-04-settings-annotated.png)
+
+1. 设置页分为 `UI / Terminal / Connection / Records` 四个分组，分别覆盖外观、终端行为、连接策略和数据管理。
+2. UI 页签负责主题、颜色和语言，决定整体视觉体验。
+3. Terminal 页签负责字体、字号、行高和终端配色，直接影响可读性和输入效率。
+4. Connection 页签负责默认认证、重连策略、后台保活、同步开关和 AI 默认项。
+5. Records 页签负责记录保留策略和分类管理，保持信息生命周期有序。
+
+### 5. 记录与关于
+
+![记录与关于](./snapshots/guide-group-05-records-about-annotated.png)
+
+1. 记录页用于保存问题、想法、TODO 和上下文碎片。
+2. 顶部区域支持搜索和分类过滤，方便快速定位内容。
+3. 记录卡片支持复制、标记和删除等操作。
+4. 底部区域提供分页、新增和导出入口。
+5. 关于页集中提供品牌、版本和产品信息入口。
+6. 这里会统一收纳使用手册、反馈渠道、隐私政策、变更日志和关于内容。
+7. 它的角色是产品内文档的最终落点，让用户不离开产品也能找到一致的说明。
 
 ## 快速启动
 
