@@ -1,23 +1,17 @@
-<table align="center">
-  <tr>
-    <td>
-      <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
-    </td>
-    <td>
-      <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" />
-      <br />
-      <img src="assets/icons/ai矩连.svg" alt="AI矩连" width="88" />
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
+  <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" />
+</p>
+
+<p align="center">
+  <img src="assets/icons/ai矩连.svg" alt="AI矩连" width="88" />
+</p>
 
 <p align="center">
   <a href="./README.md">English</a> | <strong>中文</strong>
 </p>
 
-# RemoteConn（生产架构版）
-
-这个项目不是玩具，是生产级别的应用。同时要特别关注处理和传送的高效。
+# RemoteConn - AI矩连
 
 为什么做这个工具：
 
