@@ -1,10 +1,5 @@
 <p align="center">
-  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" style="vertical-align: middle;" />
-  <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" style="vertical-align: middle;" />
-</p>
-
-<p align="center">
-  <img src="assets/icons/ai矩连.svg" alt="AI矩连" width="88" />
+  <img src="assets/icons/brand-header.svg" alt="RemoteConn / AI矩连" width="420" />
 </p>
 
 <p align="center">
