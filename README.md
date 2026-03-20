@@ -1,10 +1,10 @@
-<p align="center">
-  <img src="assets/icons/brand-header.svg" alt="RemoteConn / AI矩连" width="420" />
-</p>
+<img src="assets/icons/brand-header.svg" alt="RemoteConn / AI矩连" width="420" align="left" />
 
-<p align="center">
+<p align="right">
   <strong>English</strong> | <a href="./README_cn.md">中文</a>
 </p>
+
+<br clear="all" />
 
 # RemoteConn
 

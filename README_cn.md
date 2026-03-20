@@ -1,16 +1,16 @@
-<p align="center">
-  <img src="assets/icons/brand-header.svg" alt="RemoteConn / AI矩连" width="420" />
-</p>
+<img src="assets/icons/brand-header.svg" alt="RemoteConn / AI矩连" width="420" align="left" />
 
-<p align="center">
+<p align="right">
   <a href="./README.md">English</a> | <strong>中文</strong>
 </p>
+
+<br clear="all" />
 
 # RemoteConn - AI矩连
 
 为什么做这个工具：
 
-1. 有了AI，未来的确保留一个shell入口就可以了，原来无比重要的IDE可以扔进垃圾桶。原来觉得chatGPT这个名字很Low，现在看来很有前瞻性，chat很准确。
+1. **缘起**：下载了一个收费的终端shell工具，交互效果不理想，比如多语种（中文）的适配。
 2. 有了AI，未来的确保留一个shell入口就可以了，原来无比重要的IDE可以扔进垃圾桶。原来觉得chatGPT这个名字很Low，现在看来很有前瞻性，chat很准确。
 3. 有了AI，屏幕大小没有那么重要，因为很多时候并不需要手动与PC交互coding，尤其是做手机端应用，很多任务可以在手机侧完成。这样，手机侧入口与AI的交互性就变得很重要。也就是解决把任务送给AI的问题。这样AI接到任务 - 完成任务 - 手机上验证就闭环了。
 
