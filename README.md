@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" />
-  <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" />
+  <img src="assets/icons/logo.svg" alt="RemoteConn Logo" width="96" style="vertical-align: middle;" />
+  <img src="assets/icons/remoteconn.svg" alt="RemoteConn" width="320" style="vertical-align: middle;" />
 </p>
 
 <p align="center">
