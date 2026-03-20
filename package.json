@@ -1,0 +1,37 @@
+{
+  "name": "remoteconn",
+  "private": true,
+  "version": "1.0.6",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm --workspace @remoteconn/web run dev",
+    "dev:gateway": "npm --workspace @remoteconn/gateway run dev",
+    "build": "npm run --workspaces build",
+    "typecheck": "npm run --workspaces typecheck",
+    "lint": "npm run --workspaces lint",
+    "test": "npm run --workspaces test",
+    "format": "prettier --write \"**/*.{ts,tsx,js,mjs,cjs,json,md,css,vue,yml,yaml}\"",
+    "mini": "node scripts/mini-preview.mjs",
+    "perf:mini:replay": "node scripts/terminal-perf-replay.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.4.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.6"
+  },
+  "dependencies": {
+    "miniprogram-ci": "^2.1.26"
+  }
+}

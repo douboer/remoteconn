@@ -1,0 +1,601 @@
+<view class="page-root settings-page" style="{{themeStyle}}">
+  <view class="settings-tabs">
+    <block wx:for="{{tabs}}" wx:key="id">
+      <button class="settings-tab-btn {{activeTab === item.id ? 'active' : ''}}" data-tab="{{item.id}}" bindtap="onTabTap">{{item.label}}</button>
+    </block>
+  </view>
+
+  <view class="page-content">
+    <scroll-view class="surface-scroll" scroll-y="true">
+      <view class="surface-panel settings-panel">
+        <view class="actions settings-header-actions">
+          <text class="settings-save-status">{{saveStatusText}}</text>
+        </view>
+
+        <view wx:if="{{activeTab === 'ui'}}" class="settings-sections">
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.languageTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.languageDesc}}</text>
+            </view>
+            <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+              <view class="pill-row">
+                <block wx:for="{{uiLanguageOptions}}" wx:key="value">
+                  <view
+                    class="pill-chip {{uiLanguageIndex === index ? 'active' : ''}}"
+                    data-key="uiLanguage"
+                    data-index="{{index}}"
+                    bindtap="onPillSelect"
+                  >{{item.label}}</view>
+                </block>
+              </view>
+            </scroll-view>
+          </view>
+
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.uiTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.uiDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.themeMode}}</text>
+                <view class="segment-control">
+                  <block wx:for="{{uiThemeModeOptions}}" wx:key="value">
+                    <view
+                      class="segment-item {{uiThemeModeIndex === index ? 'active' : ''}}"
+                      data-key="uiThemeMode"
+                      data-index="{{index}}"
+                      bindtap="onPillSelect"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.themePreset}}</text>
+                <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+                  <view class="pill-row">
+                    <block wx:for="{{uiThemePresetOptions}}" wx:key="value">
+                      <view
+                        class="pill-chip {{uiThemePresetIndex === index ? 'active' : ''}}"
+                        data-key="uiThemePreset"
+                        data-index="{{index}}"
+                        bindtap="onPillSelect"
+                      >{{item.label}}</view>
+                    </block>
+                  </view>
+                </scroll-view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.uiAccentColor}}</text>
+                <view class="input color-trigger" data-key="uiAccentColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.uiAccentColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'uiAccentColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.uiAccentColor === item.value ? 'active' : ''}}"
+                      data-key="uiAccentColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.uiBgColor}}</text>
+                <view class="input color-trigger" data-key="uiBgColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.uiBgColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'uiBgColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.uiBgColor === item.value ? 'active' : ''}}"
+                      data-key="uiBgColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.uiTextColor}}</text>
+                <view class="input color-trigger" data-key="uiTextColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.uiTextColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'uiTextColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.uiTextColor === item.value ? 'active' : ''}}"
+                      data-key="uiTextColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.uiBtnColor}}</text>
+                <view class="input color-trigger" data-key="uiBtnColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.uiBtnColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'uiBtnColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.uiBtnColor === item.value ? 'active' : ''}}"
+                      data-key="uiBtnColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{activeTab === 'shell'}}" class="settings-sections">
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.shellDisplayTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.shellDisplayDesc}}</text>
+            </view>
+            <view
+              class="terminal-style-preview"
+              style="background: {{form.shellBgColor}}; color: {{form.shellTextColor}}; font-family: {{form.shellFontFamily}}; font-size: {{form.shellFontSize}}px; line-height: {{form.shellLineHeight}};"
+            >
+              <text class="terminal-style-preview-line">Last login: Sat Feb 28 20:49:12 2026 from 115.193.12.66</text>
+              <text class="terminal-style-preview-line">
+                <text class="terminal-style-preview-prompt" style="color: {{form.shellAccentColor}};">gavin mini ~ %</text> ls -la
+              </text>
+              <text class="terminal-style-preview-line">drwxr-xr-x 4 gavin staff 128 Feb 28 20:49 workspace</text>
+              <text class="terminal-style-preview-line">{{terminalPreviewLine}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.themeMode}}</text>
+                <view class="segment-control">
+                  <block wx:for="{{shellThemeModeOptions}}" wx:key="value">
+                    <view
+                      class="segment-item {{shellThemeModeIndex === index ? 'active' : ''}}"
+                      data-key="shellThemeMode"
+                      data-index="{{index}}"
+                      bindtap="onPillSelect"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.themePreset}}</text>
+                <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+                  <view class="pill-row">
+                    <block wx:for="{{shellThemePresetOptions}}" wx:key="value">
+                      <view
+                        class="pill-chip {{shellThemePresetIndex === index ? 'active' : ''}}"
+                        data-key="shellThemePreset"
+                        data-index="{{index}}"
+                        bindtap="onPillSelect"
+                      >{{item.label}}</view>
+                    </block>
+                  </view>
+                </scroll-view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.shellBgColor}}</text>
+                <view class="input color-trigger" data-key="shellBgColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.shellBgColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'shellBgColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.shellBgColor === item.value ? 'active' : ''}}"
+                      data-key="shellBgColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.shellTextColor}}</text>
+                <view class="input color-trigger" data-key="shellTextColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.shellTextColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'shellTextColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.shellTextColor === item.value ? 'active' : ''}}"
+                      data-key="shellTextColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field color-field">
+                <text>{{copy.fields.shellAccentColor}}</text>
+                <view class="input color-trigger" data-key="shellAccentColor" bindtap="onToggleColorPanel">
+                  <view class="color-bar">
+                    <view class="color-bar-fill" style="background: {{form.shellAccentColor}};"></view>
+                  </view>
+                </view>
+                <view wx:if="{{activeColorPanelKey === 'shellAccentColor'}}" class="color-palette-grid">
+                  <block wx:for="{{colorPaletteOptions}}" wx:key="value">
+                    <view
+                      class="palette-swatch-wrap {{form.shellAccentColor === item.value ? 'active' : ''}}"
+                      data-key="shellAccentColor"
+                      data-color="{{item.value}}"
+                      bindtap="onPickPaletteColor"
+                    >
+                      <view class="palette-swatch" style="background: {{item.value}};"></view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+              <view class="field pill-field">
+                <text>{{copy.fields.shellFontFamily}}</text>
+                <view class="field-stack">
+                  <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+                    <view class="pill-row">
+                      <block wx:for="{{shellFontFamilyOptions}}" wx:key="value">
+                        <view
+                          class="pill-chip font-pill {{shellFontFamilyIndex === index ? 'active' : ''}}"
+                          data-key="shellFontFamily"
+                          data-index="{{index}}"
+                          bindtap="onPillSelect"
+                        >{{item.label}}</view>
+                      </block>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.shellFontSize}}</text>
+                <view class="field-inline-row">
+                  <text class="field-hint field-hint-inline">{{copy.hints.shellFontSizeReconnect}}</text>
+                  <input
+                    class="input field-inline-input"
+                    type="number"
+                    value="{{form.shellFontSize}}"
+                    data-key="shellFontSize"
+                    bindinput="onInput"
+                  />
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.shellLineHeight}}</text>
+                <view class="field-stack">
+                  <input class="input" type="number" value="{{form.shellLineHeight}}" data-key="shellLineHeight" bindinput="onInput" />
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.unicode11}}</text>
+                <switch checked="{{form.unicode11}}" color="#67d1ff" data-key="unicode11" bindchange="onSwitch" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.shellActivationDebugOutline}}</text>
+                <view class="field-stack">
+                  <text class="field-hint">{{copy.hints.shellActivationDebugOutline}}</text>
+                </view>
+                <switch
+                  checked="{{form.shellActivationDebugOutline}}"
+                  color="#67d1ff"
+                  data-key="shellActivationDebugOutline"
+                  bindchange="onSwitch"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.showVoiceInputButton}}</text>
+                <view class="field-stack">
+                  <text class="field-hint">{{copy.hints.showVoiceInputButton}}</text>
+                </view>
+                <switch
+                  checked="{{form.showVoiceInputButton}}"
+                  color="#67d1ff"
+                  data-key="showVoiceInputButton"
+                  bindchange="onSwitch"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.ttsTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.ttsDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.ttsSpeakableMaxChars}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.ttsSpeakableMaxChars}}"
+                  data-key="ttsSpeakableMaxChars"
+                  bindinput="onInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.ttsSegmentMaxChars}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.ttsSegmentMaxChars}}"
+                  data-key="ttsSegmentMaxChars"
+                  bindinput="onInput"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.shellBufferTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.shellBufferDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.shellBufferMaxEntries}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.shellBufferMaxEntries}}"
+                  data-key="shellBufferMaxEntries"
+                  bindinput="onInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.shellBufferMaxBytes}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.shellBufferMaxBytes}}"
+                  data-key="shellBufferMaxBytes"
+                  bindinput="onInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.shellBufferSnapshotMaxLines}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.shellBufferSnapshotMaxLines}}"
+                  data-key="shellBufferSnapshotMaxLines"
+                  bindinput="onInput"
+                />
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{activeTab === 'connection'}}" class="settings-sections">
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.connectionTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.connectionDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.autoReconnect}}</text>
+                <switch checked="{{form.autoReconnect}}" color="#67d1ff" data-key="autoReconnect" bindchange="onSwitch" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.reconnectLimit}}</text>
+                <input class="input" type="number" value="{{form.reconnectLimit}}" data-key="reconnectLimit" bindinput="onInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.backgroundSessionKeepAliveMinutes}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.backgroundSessionKeepAliveMinutes}}"
+                  data-key="backgroundSessionKeepAliveMinutes"
+                  bindinput="onInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.defaultAuthType}}</text>
+                <view class="segment-control">
+                  <block wx:for="{{defaultAuthTypeOptions}}" wx:key="value">
+                    <view
+                      class="segment-item {{defaultAuthTypeIndex === index ? 'active' : ''}}"
+                      data-key="defaultAuthType"
+                      data-index="{{index}}"
+                      bindtap="onPillSelect"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view class="field">
+                <text>{{copy.fields.defaultPort}}</text>
+                <input class="input" type="number" value="{{form.defaultPort}}" data-key="defaultPort" bindinput="onInput" />
+              </view>
+              <view class="field wide">
+                <text>{{copy.fields.defaultProjectPath}}</text>
+                <input class="input" value="{{form.defaultProjectPath}}" placeholder="{{copy.placeholders.defaultProjectPath}}" data-key="defaultProjectPath" bindinput="onInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.defaultTimeoutSeconds}}</text>
+                <input class="input" type="number" value="{{form.defaultTimeoutSeconds}}" data-key="defaultTimeoutSeconds" bindinput="onInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.defaultHeartbeatSeconds}}</text>
+                <input class="input" type="number" value="{{form.defaultHeartbeatSeconds}}" data-key="defaultHeartbeatSeconds" bindinput="onInput" />
+              </view>
+            </view>
+          </view>
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.aiConnectionTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.aiConnectionDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.aiDefaultProvider}}</text>
+                <view class="segment-control">
+                  <block wx:for="{{aiProviderOptions}}" wx:key="value">
+                    <view
+                      class="segment-item {{aiDefaultProviderIndex === index ? 'active' : ''}}"
+                      data-key="aiDefaultProvider"
+                      data-index="{{index}}"
+                      bindtap="onPillSelect"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view class="field pill-field">
+                <text>{{copy.fields.aiCodexSandboxMode}}</text>
+                <view class="field-stack">
+                  <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+                    <view class="pill-row">
+                      <block wx:for="{{aiCodexSandboxOptions}}" wx:key="value">
+                        <view
+                          class="pill-chip {{aiCodexSandboxModeIndex === index ? 'active' : ''}}"
+                          data-key="aiCodexSandboxMode"
+                          data-index="{{index}}"
+                          bindtap="onPillSelect"
+                        >{{item.label}}</view>
+                      </block>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
+              <view class="field pill-field">
+                <text>{{copy.fields.aiCopilotPermissionMode}}</text>
+                <view class="field-stack">
+                  <scroll-view class="pill-scroll" scroll-x="true" show-scrollbar="false">
+                    <view class="pill-row">
+                      <block wx:for="{{aiCopilotPermissionOptions}}" wx:key="value">
+                        <view
+                          class="pill-chip {{aiCopilotPermissionModeIndex === index ? 'active' : ''}}"
+                          data-key="aiCopilotPermissionMode"
+                          data-index="{{index}}"
+                          bindtap="onPillSelect"
+                        >{{item.label}}</view>
+                      </block>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.syncTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.syncDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.syncConfigEnabled}}</text>
+                <view class="field-stack">
+                  <text class="field-hint">{{copy.hints.syncConfigLine1}}</text>
+                  <text class="field-hint">{{copy.hints.syncConfigLine2}}</text>
+                </view>
+                <switch
+                  checked="{{form.syncConfigEnabled}}"
+                  color="#67d1ff"
+                  data-key="syncConfigEnabled"
+                  bindchange="onSwitch"
+                />
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{activeTab === 'log'}}" class="settings-sections">
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.recordTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.recordDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.logRetentionDays}}</text>
+                <input class="input" type="number" value="{{form.logRetentionDays}}" data-key="logRetentionDays" bindinput="onInput" />
+              </view>
+            </view>
+          </view>
+
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.voiceCategoryTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.voiceCategoryDesc}}</text>
+            </view>
+
+            <view class="category-create-row">
+              <input
+                class="input category-create-input"
+                value="{{newVoiceRecordCategory}}"
+                placeholder="{{copy.placeholders.newVoiceRecordCategory}}"
+                maxlength="12"
+                bindinput="onVoiceRecordCategoryInput"
+              />
+              <button class="btn category-create-btn" bindtap="onAddVoiceRecordCategory">{{copy.buttons.addVoiceRecordCategory}}</button>
+            </view>
+
+            <text class="settings-inline-label">{{copy.fields.voiceCategoryList}}</text>
+
+            <view
+              class="voice-category-grid {{voiceCategoryDragActive ? 'dragging' : ''}}"
+              catchtouchmove="onVoiceRecordCategoryDragMove"
+              catchtouchend="onVoiceRecordCategoryDragEnd"
+              catchtouchcancel="onVoiceRecordCategoryDragEnd"
+            >
+              <view
+                wx:for="{{voiceRecordCategoryCards}}"
+                wx:key="category"
+                class="voice-category-card {{item.isSelected ? 'is-selected' : ''}} {{item.dragging ? 'is-dragging' : ''}}"
+                style="{{item.dragStyle}}"
+                data-category="{{item.category}}"
+                bindtap="onSelectVoiceRecordCategory"
+                catchlongpress="onStartVoiceRecordCategoryDrag"
+              >
+                <view class="voice-category-card-head">
+                  <text class="voice-category-card-name">{{item.category}}</text>
+                  <text wx:if="{{item.isDefault}}" class="voice-category-card-badge">{{copy.labels.defaultBadge}}</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="voice-category-actions">
+              <button
+                class="btn secondary compact-btn"
+                disabled="{{!selectedVoiceRecordCategory || form.voiceRecordDefaultCategory === selectedVoiceRecordCategory}}"
+                bindtap="applySelectedVoiceRecordCategoryAsDefault"
+              >{{copy.buttons.setDefaultCategory}}</button>
+              <button
+                class="btn danger compact-btn"
+                disabled="{{!selectedVoiceRecordCategory}}"
+                bindtap="removeSelectedVoiceRecordCategory"
+              >{{copy.buttons.removeSelectedCategory}}</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <bottom-nav page="settings" />
+</view>

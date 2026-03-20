@@ -1,0 +1,107 @@
+{
+  "targetVersion": "2.0.0",
+  "platform": "wechat-miniprogram",
+  "generatedAt": "2026-02-27",
+  "summary": {
+    "status": "done",
+    "matchedItems": 18,
+    "totalItems": 18
+  },
+  "items": [
+    {
+      "id": "nav.bottom",
+      "name": "底部导航与返回语义",
+      "status": "done"
+    },
+    {
+      "id": "page.connect",
+      "name": "连接页（服务器列表）",
+      "status": "done"
+    },
+    {
+      "id": "page.server_settings",
+      "name": "服务器配置页",
+      "status": "done"
+    },
+    {
+      "id": "page.terminal",
+      "name": "终端页",
+      "status": "done"
+    },
+    {
+      "id": "page.logs",
+      "name": "日志页",
+      "status": "done"
+    },
+    {
+      "id": "page.records",
+      "name": "闪念页",
+      "status": "done"
+    },
+    {
+      "id": "page.settings",
+      "name": "全局配置页",
+      "status": "done"
+    },
+    {
+      "id": "page.plugins",
+      "name": "插件管理页（可开关）",
+      "status": "done"
+    },
+    {
+      "id": "transport.gateway",
+      "name": "网关传输层（connect/send/resize/heartbeat）",
+      "status": "done"
+    },
+    {
+      "id": "store.servers",
+      "name": "服务器存储与排序",
+      "status": "done"
+    },
+    {
+      "id": "store.settings",
+      "name": "全局配置与主题存储",
+      "status": "done"
+    },
+    {
+      "id": "store.logs",
+      "name": "日志存储与导出",
+      "status": "done"
+    },
+    {
+      "id": "store.records",
+      "name": "闪念存储与导出",
+      "status": "done"
+    },
+    {
+      "id": "voice.input_panel",
+      "name": "语音输入面板",
+      "status": "done"
+    },
+    {
+      "id": "voice.record_action",
+      "name": "record 写入闪念",
+      "status": "done"
+    },
+    {
+      "id": "pagination.logs",
+      "name": "日志分页（15 条/页）",
+      "status": "done"
+    },
+    {
+      "id": "pagination.records",
+      "name": "闪念分页（15 条/页）",
+      "status": "done"
+    },
+    {
+      "id": "assets.versioning",
+      "name": "图标版本化与缓存策略",
+      "status": "done"
+    }
+  ],
+  "notes": {
+    "page.plugins": "已接入插件运行时（启用/禁用/重载/移除、JSON 导入导出、命令执行、运行日志）。",
+    "voice.input_panel": "已接入 /ws/asr 实时识别链路，支持按住采集分片上行、结果回填、stop/cancel 收尾。",
+    "assets.versioning": "图标资源统一追加版本 query（v=2026022701），发布后可显式失效旧缓存。"
+  }
+}

@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RemoteConn 全功能原型</title>
+    <link rel="stylesheet" href="/prototype/liquid-console.css?v=20260219-5" />
+  </head>
+  <body>
+    <div class="phone-shell" data-plugin-root>
+      <section class="screen is-active" data-screen="servermanager">
+        <div class="title-row">
+          <div class="title-actions manager-actions">
+            <button class="icon-btn" type="button" data-action="server-create" title="增加服务器">
+              <img src="/assets/icons/create.svg?v=20260219-2" alt="增加服务器" />
+            </button>
+            <button class="icon-btn" type="button" data-action="server-delete" title="删除服务器">
+              <img src="/assets/icons/delete.svg?v=20260219-2" alt="删除服务器" />
+            </button>
+            <button class="icon-btn" type="button" data-action="server-select-all" title="全选服务器">
+              <img src="/assets/icons/selectall.svg?v=20260219-2" alt="全选服务器" />
+            </button>
+          </div>
+          <h1>连接</h1>
+        </div>
+
+        <main class="screen-content">
+          <section class="surface surface-split">
+            <div class="surface-head surface-head-stack">
+              <div class="inline-form">
+                <input id="serverSearch" type="text" placeholder="搜索服务器 / 标签 / 主机" />
+                <select id="serverSort">
+                  <option value="recent">最近连接优先</option>
+                  <option value="name">按名称排序</option>
+                  <option value="host">按主机排序</option>
+                </select>
+              </div>
+              <div class="inline-form">
+                <button class="text-btn" type="button" data-action="server-test">测试连接</button>
+                <button class="text-btn" type="button" data-action="open-console">连接</button>
+              </div>
+            </div>
+            <div id="serverList" class="server-list hover-scroll"></div>
+          </section>
+
+          <section class="surface surface-split">
+            <div class="tabs" data-tabs-root="server">
+              <button class="tab-btn is-active" type="button" data-tab-target="server-base">基础</button>
+              <button class="tab-btn" type="button" data-tab-target="server-auth">认证</button>
+              <button class="tab-btn" type="button" data-tab-target="server-codex">Codex</button>
+            </div>
+
+            <form id="serverForm" class="form-scroll hover-scroll">
+              <div class="tab-pane is-active" data-pane="server-base">
+                <label class="field">
+                  <span>服务器名称</span>
+                  <input name="name" type="text" required />
+                </label>
+                <label class="field">
+                  <span>用户名</span>
+                  <input name="username" type="text" required />
+                </label>
+                <label class="field">
+                  <span>主机地址</span>
+                  <input name="host" type="text" required />
+                </label>
+                <div class="field-grid two-col">
+                  <label class="field">
+                    <span>端口</span>
+                    <input name="port" type="number" min="1" max="65535" required />
+                  </label>
+                  <label class="field">
+                    <span>传输模式</span>
+                    <select name="transportMode">
+                      <option value="web">Web 网关</option>
+                      <option value="ios">iOS Native</option>
+                      <option value="miniapp">小程序网关</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="field">
+                  <span>标签（逗号分隔）</span>
+                  <input name="tags" type="text" placeholder="prod,beijing" />
+                </label>
+              </div>
+
+              <div class="tab-pane" data-pane="server-auth">
+                <label class="field">
+                  <span>认证类型</span>
+                  <select name="authType" id="authTypeSelect">
+                    <option value="password">密码</option>
+                    <option value="privateKey">私钥</option>
+                    <option value="certificate">证书</option>
+                  </select>
+                </label>
+                <div class="field-grid two-col">
+                  <label class="field">
+                    <span>连接超时（秒）</span>
+                    <input name="timeout" type="number" min="5" max="120" />
+                  </label>
+                  <label class="field">
+                    <span>心跳间隔（秒）</span>
+                    <input name="heartbeat" type="number" min="5" max="120" />
+                  </label>
+                </div>
+                <div id="authFields" class="auth-fields"></div>
+              </div>
+
+              <div class="tab-pane" data-pane="server-codex">
+                <label class="field">
+                  <span>项目目录（Codex 启动目录）</span>
+                  <input name="projectPath" type="text" placeholder="~/workspace/remoteconn" />
+                </label>
+                <label class="field checkbox-field">
+                  <input name="autoStartCodex" type="checkbox" />
+                  <span>连接成功后自动进入 Codex 模式</span>
+                </label>
+                <label class="field">
+                  <span>目录候选（从 ~ 下选择，逗号分隔）</span>
+                  <input name="projectCandidates" type="text" placeholder="~/workspace/remoteconn,~/workspace/staging" />
+                </label>
+              </div>
+
+              <div class="inline-form">
+                <button class="ghost-btn" type="button" data-action="server-test">测试连接</button>
+                <button class="primary-btn" id="saveServerBtn" type="button">保存当前服务器</button>
+              </div>
+            </form>
+          </section>
+        </main>
+
+        <footer class="bottom-bar">
+          <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+            <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+          </button>
+          <div class="bottom-actions manager-bottom-actions">
+            <button class="icon-btn" type="button" data-action="navigate-config" title="全局配置">
+              <img src="/assets/icons/config.svg?v=20260219-2" alt="全局配置" />
+            </button>
+            <button class="icon-btn" type="button" data-action="open-log" title="日志">
+              <img src="/assets/icons/log.svg?v=20260219-2" alt="日志" />
+            </button>
+          </div>
+        </footer>
+      </section>
+
+      <section class="screen" data-screen="config">
+        <div class="title-row">
+          <div class="title-actions config-actions">
+            <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+              <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+            </button>
+          </div>
+          <button class="title-btn" type="button" data-action="open-global-dialog">设置</button>
+        </div>
+
+        <main class="screen-content single-surface">
+          <section class="surface">
+            <div class="tabs" data-tabs-root="global">
+              <button class="tab-btn is-active" type="button" data-tab-target="terminal">终端</button>
+              <button class="tab-btn" type="button" data-tab-target="theme">液态主题</button>
+              <button class="tab-btn" type="button" data-tab-target="safety">安全</button>
+              <button class="tab-btn" type="button" data-tab-target="plugins">插件</button>
+            </div>
+
+            <form id="globalForm" class="form-scroll hover-scroll">
+              <div class="tab-pane is-active" data-pane="terminal">
+                <div class="field-grid two-col">
+                  <label class="field">
+                    <span>终端字体</span>
+                    <select name="fontFamily">
+                      <option value="JetBrains Mono">JetBrains Mono</option>
+                      <option value="Fira Code">Fira Code</option>
+                      <option value="Source Code Pro">Source Code Pro</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>光标样式</span>
+                    <select name="cursorStyle">
+                      <option value="block">块状</option>
+                      <option value="underline">下划线</option>
+                      <option value="bar">竖线</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="field-grid three-col">
+                  <label class="field">
+                    <span>字体大小</span>
+                    <input name="fontSize" type="number" min="12" max="22" />
+                  </label>
+                  <label class="field">
+                    <span>行高</span>
+                    <input name="lineHeight" type="number" min="1" max="2" step="0.1" />
+                  </label>
+                  <label class="field">
+                    <span>重连次数</span>
+                    <input name="reconnectLimit" type="number" min="0" max="10" />
+                  </label>
+                </div>
+                <label class="field checkbox-field">
+                  <input name="unicode11" type="checkbox" />
+                  <span>启用 Unicode11（中文宽字符）</span>
+                </label>
+                <label class="field checkbox-field">
+                  <input name="autoReconnect" type="checkbox" />
+                  <span>断线自动重连</span>
+                </label>
+              </div>
+
+              <div class="tab-pane" data-pane="theme">
+                <label class="field">
+                  <span>主题预设</span>
+                  <select name="themePreset" id="themePresetSelect">
+                    <option value="tide">潮汐蓝</option>
+                    <option value="mint">薄荷流</option>
+                    <option value="sunrise">晨曦橙</option>
+                  </select>
+                </label>
+                <div class="field-grid three-col">
+                  <label class="field">
+                    <span>主色</span>
+                    <input name="accentColor" type="color" />
+                  </label>
+                  <label class="field">
+                    <span>背景色</span>
+                    <input name="bgColor" type="color" />
+                  </label>
+                  <label class="field">
+                    <span>文字色</span>
+                    <input name="textColor" type="color" />
+                  </label>
+                </div>
+                <div class="field-grid three-col">
+                  <label class="field">
+                    <span>液态透明度</span>
+                    <input name="liquidAlpha" type="number" min="0.35" max="0.95" step="0.05" />
+                  </label>
+                  <label class="field">
+                    <span>背景模糊(px)</span>
+                    <input name="blurRadius" type="number" min="0" max="40" />
+                  </label>
+                  <label class="field">
+                    <span>动效速度(秒)</span>
+                    <input name="motionDuration" type="number" min="6" max="30" />
+                  </label>
+                </div>
+                <div class="inline-form">
+                  <button class="text-btn" type="button" data-action="theme-auto-contrast">自动对比背景</button>
+                  <button class="ghost-btn" type="button" data-action="theme-reset">恢复默认主题</button>
+                </div>
+                <p id="contrastHint" class="hint-text"></p>
+              </div>
+
+              <div class="tab-pane" data-pane="safety">
+                <label class="field">
+                  <span>主机指纹策略</span>
+                  <select name="hostKeyPolicy">
+                    <option value="strict">严格校验</option>
+                    <option value="trustFirstUse">首次信任</option>
+                    <option value="manual">每次手动确认</option>
+                  </select>
+                </label>
+                <div class="field-grid two-col">
+                  <label class="field">
+                    <span>日志保留天数</span>
+                    <input name="logRetentionDays" type="number" min="1" max="365" />
+                  </label>
+                  <label class="field">
+                    <span>凭据记忆策略</span>
+                    <select name="credentialMemoryPolicy">
+                      <option value="remember">记住凭据引用</option>
+                      <option value="session">仅会话内保留</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="field checkbox-field">
+                  <input name="maskSecrets" type="checkbox" />
+                  <span>导出日志自动脱敏</span>
+                </label>
+                <div class="inline-form">
+                  <button class="ghost-btn" type="button" data-action="clear-known-hosts">清除主机指纹</button>
+                  <button class="ghost-btn" type="button" data-action="clear-credentials">清除本地凭据</button>
+                </div>
+              </div>
+
+              <div class="tab-pane" data-pane="plugins">
+                <div class="plugin-toolbar">
+                  <button class="text-btn" type="button" data-action="plugins-refresh">刷新列表</button>
+                  <button class="text-btn" type="button" data-action="plugins-install-sample">安装示例插件</button>
+                  <button class="text-btn" type="button" data-action="plugins-export">导出插件包</button>
+                </div>
+                <label class="field">
+                  <span>导入插件包（JSON）</span>
+                  <textarea id="pluginPackageInput" rows="7" placeholder='{"manifest": {...}, "mainJs": "...", "stylesCss": "..."}'></textarea>
+                </label>
+                <div class="inline-form">
+                  <button class="primary-btn" type="button" data-action="plugins-import-json">导入插件包</button>
+                </div>
+                <div id="pluginList" class="plugin-list hover-scroll"></div>
+                <div class="plugin-runtime">
+                  <h4>插件运行日志</h4>
+                  <div id="pluginRuntimeLog" class="log-box hover-scroll"></div>
+                </div>
+              </div>
+
+              <div class="inline-form">
+                <button class="ghost-btn" type="button" data-action="restore-global-defaults">恢复默认设置</button>
+                <button class="primary-btn" id="saveGlobalBtn" type="button">保存全局配置</button>
+              </div>
+            </form>
+          </section>
+        </main>
+
+        <footer class="bottom-bar">
+          <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+            <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+          </button>
+          <div class="bottom-actions config-bottom-actions">
+            <button class="icon-btn" type="button" data-action="navigate-manager" title="服务器管理">
+              <img src="/assets/icons/serverlist.svg?v=20260219-2" alt="服务器管理" />
+            </button>
+            <button class="icon-btn" type="button" data-action="open-log" title="日志">
+              <img src="/assets/icons/log.svg?v=20260219-2" alt="日志" />
+            </button>
+          </div>
+        </footer>
+      </section>
+
+      <section class="screen" data-screen="console">
+        <div class="title-row">
+          <div class="title-actions console-actions">
+            <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+              <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+            </button>
+            <div class="inline-actions console-inline-actions">
+              <button class="icon-btn" type="button" data-action="open-codex-dialog" title="启动 codex">
+                <img src="/assets/icons/codex.svg?v=20260219-2" alt="启动 codex" />
+              </button>
+              <button class="icon-btn" type="button" data-action="clear-console" title="清屏">
+                <img src="/assets/icons/clear.svg?v=20260219-2" alt="清屏" />
+              </button>
+            </div>
+          </div>
+          <h1 id="consoleServerName">remoteconn</h1>
+        </div>
+
+        <div class="session-bar">
+          <span id="sessionStateBadge" class="state-pill state-idle">idle</span>
+          <span id="latencyValue" class="latency-chip">-- ms</span>
+          <button class="text-btn" type="button" data-action="session-reconnect">重连</button>
+          <button class="ghost-btn" type="button" data-action="session-disconnect">断开</button>
+        </div>
+
+        <div id="pluginCommandBar" class="plugin-command-bar hover-scroll"></div>
+
+        <main class="screen-content single-surface">
+          <section class="surface console-surface">
+            <pre id="terminalOutput" class="terminal-output hover-scroll"></pre>
+            <div class="terminal-composer">
+              <input id="terminalInput" type="text" placeholder="输入命令后回车，例如：ls -la" />
+              <button class="text-btn" type="button" data-action="terminal-send">发送</button>
+            </div>
+          </section>
+        </main>
+
+        <footer class="bottom-bar">
+          <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+            <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+          </button>
+          <div class="bottom-actions console-bottom-actions">
+            <button class="icon-btn" type="button" data-action="navigate-manager" title="服务器管理">
+              <img src="/assets/icons/serverlist.svg?v=20260219-2" alt="服务器管理" />
+            </button>
+            <button class="icon-btn" type="button" data-action="navigate-config" title="全局配置">
+              <img src="/assets/icons/config.svg?v=20260219-2" alt="全局配置" />
+            </button>
+            <button class="icon-btn" type="button" data-action="open-log" title="日志">
+              <img src="/assets/icons/log.svg?v=20260219-2" alt="日志" />
+            </button>
+          </div>
+        </footer>
+      </section>
+
+      <section class="screen" data-screen="log">
+        <div class="title-row">
+          <div class="title-actions log-actions">
+            <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+              <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+            </button>
+          </div>
+          <h1>日志</h1>
+        </div>
+
+        <main class="screen-content single-surface">
+          <section class="surface log-surface">
+            <div class="log-filter-row">
+              <select id="logServerFilter"></select>
+              <select id="logStatusFilter">
+                <option value="all">全部状态</option>
+                <option value="connected">连接成功</option>
+                <option value="disconnected">正常断开</option>
+                <option value="error">连接失败</option>
+              </select>
+              <input id="logDateFrom" type="date" />
+              <input id="logDateTo" type="date" />
+              <button class="text-btn" type="button" data-action="logs-apply-filter">筛选</button>
+              <button class="text-btn" type="button" data-action="logs-export">导出</button>
+            </div>
+
+            <div id="sessionLogList" class="session-log-list hover-scroll"></div>
+            <pre id="sessionLogDetail" class="session-log-detail hover-scroll"></pre>
+          </section>
+        </main>
+
+        <footer class="bottom-bar">
+          <button class="icon-btn" type="button" data-action="go-back" title="返回上一页">
+            <img src="/assets/icons/back.svg?v=20260219-2" alt="返回上一页" />
+          </button>
+          <div class="bottom-actions config-bottom-actions">
+            <button class="icon-btn" type="button" data-action="navigate-manager" title="服务器管理">
+              <img src="/assets/icons/serverlist.svg?v=20260219-2" alt="服务器管理" />
+            </button>
+            <button class="icon-btn" type="button" data-action="navigate-config" title="全局配置">
+              <img src="/assets/icons/config.svg?v=20260219-2" alt="全局配置" />
+            </button>
+          </div>
+        </footer>
+      </section>
+    </div>
+
+    <dialog id="codexDialog" class="modal">
+      <h3>启动 Codex 模式</h3>
+      <p>将执行：`cd 项目目录` -> `command -v codex` -> `codex`。</p>
+      <div class="modal-actions">
+        <button class="text-btn" type="button" data-action="run-codex" data-sandbox="read-only">read-only</button>
+        <button class="text-btn" type="button" data-action="run-codex" data-sandbox="workspace-write">workspace-write</button>
+        <button class="text-btn" type="button" data-action="run-codex" data-sandbox="danger-full-access">danger-full-access</button>
+      </div>
+      <button class="ghost-btn" type="button" data-action="close-modal">取消</button>
+    </dialog>
+
+    <dialog id="globalDialog" class="modal">
+      <h3>全局配置快照</h3>
+      <pre id="globalSnapshot" class="modal-snapshot"></pre>
+      <button class="ghost-btn" type="button" data-action="close-modal">关闭</button>
+    </dialog>
+
+    <dialog id="hostKeyDialog" class="modal">
+      <h3>主机指纹确认</h3>
+      <p id="hostKeySummary"></p>
+      <pre id="hostKeyFingerprint" class="modal-snapshot"></pre>
+      <label class="field checkbox-field">
+        <input id="hostKeyRemember" type="checkbox" checked />
+        <span>记住此主机（known_hosts）</span>
+      </label>
+      <div class="modal-actions">
+        <button class="text-btn" type="button" data-action="hostkey-trust">信任并继续</button>
+        <button class="ghost-btn" type="button" data-action="hostkey-cancel">取消连接</button>
+      </div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="/prototype/liquid-console.js?v=20260219-4" defer></script>
+  </body>
+</html>

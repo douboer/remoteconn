@@ -1,0 +1,36 @@
+@import "./common.wxss";
+
+.about-home-brand {
+  position: relative;
+  padding: 0 0 10rpx 8rpx;
+}
+
+.about-home-logo {
+  width: 96rpx;
+  height: 96rpx;
+  display: block;
+}
+
+.about-home-wordmark {
+  width: 563rpx;
+  display: block;
+  margin-top: -96rpx;
+  margin-left: 112rpx;
+}
+
+.about-home-submark {
+  width: 88rpx;
+  display: block;
+  margin-top: 14rpx;
+  margin-left: 112rpx;
+}
+
+.about-home-version {
+  display: block;
+  margin-top: 14rpx;
+  margin-left: 112rpx;
+  font-size: 28rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--about-text);
+}

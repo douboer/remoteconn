@@ -1,0 +1,543 @@
+<view class="page-root terminal-page" style="{{themeStyle}}">
+  <view class="page-toolbar terminal-toolbar">
+    <view class="toolbar-left">
+      <button
+        class="icon-btn toolbar-plain-btn terminal-toolbar-touch-btn svg-press-btn {{activeAiProvider ? 'is-connected' : ''}}"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="terminal:ai"
+        disabled="{{aiLaunchBusy}}"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onOpenCodex"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'terminal:ai' ? (activeAiProvider ? (uiButtonActiveIcons.codex || uiButtonIcons.codex || '/assets/icons/codex.svg') : (uiButtonAccentIcons.codex || uiButtonIcons.codex || '/assets/icons/codex.svg')) : (activeAiProvider ? (uiButtonActiveIcons.codex || uiButtonIcons.codex || '/assets/icons/codex.svg') : (uiButtonIcons.codex || '/assets/icons/codex.svg'))}}"
+          mode="aspectFit"
+        />
+      </button>
+      <button
+        class="icon-btn toolbar-plain-btn terminal-toolbar-touch-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="terminal:clear"
+        disabled="{{statusText === 'connected' && activeAiProvider === 'codex'}}"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onClearScreen"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'terminal:clear' ? (uiButtonAccentIcons.clear || uiButtonIcons.clear || '/assets/icons/clear.svg') : (uiButtonIcons.clear || '/assets/icons/clear.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+    </view>
+    <view class="toolbar-spacer"></view>
+    <view class="terminal-toolbar-actions">
+      <button
+        class="icon-btn terminal-toolbar-tts-btn svg-press-btn {{ttsEnabled ? 'is-enabled' : 'is-disabled'}} {{ttsState === 'playing' ? 'is-playing' : ''}} {{ttsState === 'preparing' ? 'is-preparing' : ''}}"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="terminal:tts"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onToggleTts"
+      >
+        <image
+          class="icon-img terminal-toolbar-tts-icon svg-press-icon"
+          src="{{pressedSvgButtonKey === 'terminal:tts' ? (ttsEnabled ? (terminalToolActiveIcons.reading || terminalToolIcons.reading || '/assets/icons/reading.svg') : (terminalToolActiveIcons.stopreading || terminalToolIcons.stopreading || '/assets/icons/stopreading.svg')) : (ttsEnabled ? (terminalToolActiveIcons.reading || terminalToolIcons.reading || '/assets/icons/reading.svg') : (terminalToolIcons.stopreading || '/assets/icons/stopreading.svg'))}}"
+          mode="aspectFit"
+        />
+      </button>
+      <view class="state-chip state-{{statusClass}}" bindtap="onOpenSessionInfo">
+        <text>{{statusLabel}}</text>
+      </view>
+      <text class="state-chip state-chip-action" bindtap="onOpenConnectionDiagnostics">{{latencyMs}}ms</text>
+      <view class="terminal-toolbar-divider"></view>
+      <button
+        class="terminal-connection-switch {{connectionActionReconnect ? 'is-reconnect' : 'is-disconnect'}} {{statusClass === 'connected' ? 'is-connected' : ''}}"
+        disabled="{{connectionActionDisabled}}"
+        bindtap="onConnectionAction"
+      >
+        <text class="terminal-connection-switch-label">{{connectionActionText}}</text>
+        <view class="terminal-connection-switch-knob"></view>
+      </button>
+    </view>
+  </view>
+
+  <view class="page-content terminal-content">
+    <view class="terminal-surface">
+      <view class="surface-panel terminal-panel" bindtap="onPanelTap">
+        <scroll-view
+          class="terminal-output"
+          scroll-y="true"
+          scroll-top="{{outputScrollTop}}"
+          bindscroll="onOutputScroll"
+          catchlongpress="onOutputLongPress"
+          catchtap="onOutputTap"
+        >
+          <view
+            wx:if="{{outputTopSpacerPx > 0}}"
+            class="output-viewport-spacer"
+            style="height: {{outputTopSpacerPx}}px;"
+          ></view>
+          <view
+            wx:for="{{outputRenderLines}}"
+            wx:key="index"
+            class="output-line"
+            style="min-height: {{outputLineHeightPx}}px; line-height: {{outputLineHeightPx}}px; {{item.lineStyle}}"
+            data-line-index="{{item.bufferRow !== undefined ? item.bufferRow : index}}"
+            catchlongpress="onOutputLongPress"
+            catchtap="onOutputLineTap"
+          >
+            <text
+              wx:for="{{item.segments}}"
+              wx:key="index"
+              class="output-segment {{item.fixed ? 'output-segment-fixed' : ''}}"
+              style="{{item.style}}"
+              user-select="true"
+              >{{item.text}}</text
+            >
+          </view>
+          <view
+            wx:if="{{outputBottomSpacerPx > 0}}"
+            class="output-viewport-spacer"
+            style="height: {{outputBottomSpacerPx}}px;"
+          ></view>
+          <view
+            wx:if="{{outputKeyboardInsetPx > 0}}"
+            class="output-keyboard-spacer"
+            style="height: {{outputKeyboardInsetPx}}px;"
+          ></view>
+        </scroll-view>
+
+        <text wx:if="{{disconnectedHintVisible}}" class="terminal-disconnected-hint"
+          >{{disconnectedHintText}}</text
+        >
+
+        <view class="shell-metrics-probe">
+          <view class="shell-metrics-probe-line shell-metrics-probe-line-ascii"
+            >{{shellMetricsAsciiProbeText}}</view
+          >
+          <view class="shell-metrics-probe-line shell-metrics-probe-line-wide"
+            >{{shellMetricsWideProbeText}}</view
+          >
+        </view>
+
+        <view
+          wx:if="{{activationDebugVisible}}"
+          class="terminal-activation-debug"
+          style="top: {{activationDebugTopPx}}px; height: {{activationDebugHeightPx}}px;"
+        ></view>
+
+        <view
+          wx:if="{{terminalCaretVisible}}"
+          class="terminal-caret"
+          style="left: {{terminalCaretLeftPx}}px; top: {{terminalCaretTopPx}}px; height: {{terminalCaretHeightPx}}px;"
+        ></view>
+
+        <input
+          class="terminal-shell-input-proxy"
+          value="{{shellInputValue}}"
+          focus="{{shellInputFocus}}"
+          cursor="{{shellInputCursor}}"
+          type="text"
+          disabled="{{statusClass !== 'connected'}}"
+          maxlength="4096"
+          adjust-position="false"
+          confirm-type="send"
+          bindinput="onShellInputChange"
+          bindfocus="onShellInputFocus"
+          bindconfirm="onShellInputConfirm"
+          bindkeyboardheightchange="onShellInputKeyboardHeightChange"
+          bindblur="onShellInputBlur"
+        />
+
+        <view
+          wx:if="{{touchToolsExpanded}}"
+          class="terminal-touch-filter"
+          catchtap="noop"
+          catchtouchstart="noop"
+          catchtouchmove="noop"
+          catchtouchend="noop"
+          catchtouchcancel="noop"
+        ></view>
+
+        <view class="terminal-touch-tools {{touchToolsExpanded ? 'is-expanded' : ''}}" catchtap="noop">
+          <view wx:if="{{touchToolsExpanded}}" class="terminal-touch-tools-body">
+            <view class="terminal-touch-direction-pad">
+              <button
+                wx:for="{{terminalTouchDirectionKeys}}"
+                wx:key="key"
+                class="terminal-touch-direction-btn svg-press-btn {{item.slotClass}}"
+                hover-class="svg-press-btn-hover"
+                hover-start-time="0"
+                hover-stay-time="80"
+                data-key="{{item.key}}"
+                data-press-key="{{item.pressKey}}"
+                bindtouchstart="onSvgButtonTouchStart"
+                bindtouchend="onSvgButtonTouchEnd"
+                bindtouchcancel="onSvgButtonTouchEnd"
+                bindtap="onTouchKeyTap"
+              >
+                <image
+                  class="terminal-touch-direction-icon svg-press-icon"
+                  src="{{pressedSvgButtonKey === item.pressKey ? item.pressedIcon : item.icon}}"
+                  mode="aspectFit"
+                />
+              </button>
+            </view>
+            <view class="terminal-touch-action-stack">
+              <block wx:for="{{terminalTouchActionButtons}}" wx:key="key">
+                <button
+                  wx:if="{{item.action === 'paste'}}"
+                  class="terminal-touch-action-btn svg-press-btn {{item.slotClass}}"
+                  hover-class="svg-press-btn-hover"
+                  hover-start-time="0"
+                  hover-stay-time="80"
+                  data-press-key="{{item.pressKey}}"
+                  bindtouchstart="onSvgButtonTouchStart"
+                  bindtouchend="onSvgButtonTouchEnd"
+                  bindtouchcancel="onSvgButtonTouchEnd"
+                  bindtap="onPasteFromClipboard"
+                >
+                  <image
+                    class="terminal-touch-action-icon svg-press-icon"
+                    src="{{pressedSvgButtonKey === item.pressKey ? item.pressedIcon : item.icon}}"
+                    mode="aspectFit"
+                  />
+                </button>
+                <button
+                  wx:else
+                  class="terminal-touch-action-btn svg-press-btn {{item.slotClass}} {{touchShiftMode !== 'off' && item.key === 'shift' ? 'is-active' : ''}} {{touchShiftMode === 'lock' && item.key === 'shift' ? 'is-locked' : ''}}"
+                  hover-class="svg-press-btn-hover"
+                  hover-start-time="0"
+                  hover-stay-time="80"
+                  data-key="{{item.key}}"
+                  data-press-key="{{item.pressKey}}"
+                  bindtouchstart="onSvgButtonTouchStart"
+                  bindtouchend="onSvgButtonTouchEnd"
+                  bindtouchcancel="onSvgButtonTouchEnd"
+                  bindtap="onTouchKeyTap"
+                >
+                  <image
+                    class="terminal-touch-action-icon svg-press-icon"
+                    src="{{pressedSvgButtonKey === item.pressKey ? item.pressedIcon : item.icon}}"
+                    mode="aspectFit"
+                  />
+                </button>
+              </block>
+            </view>
+          </view>
+          <button
+            class="terminal-touch-toggle-btn svg-press-btn"
+            hover-class="svg-press-btn-hover"
+            hover-start-time="0"
+            hover-stay-time="80"
+            data-press-key="terminal:toggle-touch-tools"
+            bindtouchstart="onSvgButtonTouchStart"
+            bindtouchend="onSvgButtonTouchEnd"
+            bindtouchcancel="onSvgButtonTouchEnd"
+            bindtap="onToggleTouchTools"
+          >
+            <image
+              class="terminal-touch-toggle-icon svg-press-icon"
+              src="{{pressedSvgButtonKey === 'terminal:toggle-touch-tools' ? (terminalTouchTogglePressedIcon || terminalTouchToggleIcon || '/assets/icons/keyboard.svg') : (terminalTouchToggleIcon || '/assets/icons/keyboard.svg')}}"
+              mode="aspectFit"
+            />
+          </button>
+        </view>
+
+        <view
+          wx:if="{{showVoiceInputButton}}"
+          class="voice-float-layer"
+          style="left: {{voiceFloatLeft}}px; bottom: {{voiceFloatBottom}}px; width: {{voicePanelVisible ? voicePanelWidthPx : voiceButtonSizePx}}px;"
+          catchtap="noop"
+          bindtouchstart="onVoiceLayerTouchStart"
+          bindtouchmove="onVoiceLayerTouchMove"
+          bindtouchend="onVoiceLayerTouchEnd"
+          bindtouchcancel="onVoiceLayerTouchEnd"
+        >
+          <button
+            wx:if="{{!voicePanelVisible}}"
+            class="voice-floating-btn voice-plain-btn svg-press-btn {{voiceHolding ? 'is-holding' : ''}}"
+            hover-class="svg-press-btn-hover"
+            hover-start-time="0"
+            hover-stay-time="80"
+            data-drag-handle="1"
+            data-press-key="terminal:voice-floating"
+            bindtouchstart="onVoicePressStart"
+            catchtouchmove="onVoiceLayerTouchMove"
+            bindtouchend="onVoicePressEnd"
+            bindtouchcancel="onVoicePressEnd"
+          >
+            <image
+              class="voice-action-icon svg-press-icon"
+              src="{{pressedSvgButtonKey === 'terminal:voice-floating' ? (terminalToolActiveIcons.voice || terminalToolIcons.voice || '/assets/icons/voice.svg') : (terminalToolIcons.voice || '/assets/icons/voice.svg')}}"
+              mode="aspectFit"
+            />
+          </button>
+
+          <view wx:if="{{voicePanelVisible}}" class="voice-wrap" catchtap="noop">
+            <view class="frame2256 {{voiceHolding ? 'is-recording' : ''}}" style="opacity: {{frameOpacity}};">
+              <view class="terminal-input-wrap" data-drag-handle="1" catchtouchmove="onVoiceLayerTouchMove">
+                <view wx:if="{{voiceHolding}}" class="voice-recording-hint">
+                  <view class="voice-recording-pulse">
+                    <view class="voice-recording-pulse-core" />
+                    <view class="voice-recording-pulse-ring" />
+                    <view class="voice-recording-pulse-ring voice-recording-pulse-ring-delay" />
+                  </view>
+                  <text class="voice-recording-hint-text">{{copy.voice.recordingHint}}</text>
+                </view>
+                <textarea
+                  class="terminal-voice-input"
+                  auto-height
+                  value="{{inputText}}"
+                  placeholder="{{copy.voice.inputPlaceholder}}"
+                  confirm-type="send"
+                  bindconfirm="onInputConfirm"
+                  bindinput="onInputText"
+                />
+              </view>
+
+              <view class="voice-actions-row">
+                <view
+                  class="voice-actions-left-track"
+                  bindtouchstart="onVoiceActionsTouchStart"
+                  catchtouchmove="onVoiceActionsTouchMove"
+                  bindtouchend="onVoiceActionsTouchEnd"
+                  bindtouchcancel="onVoiceActionsTouchEnd"
+                >
+                  <view class="voice-actions-left" style="transform: translateX({{voiceActionsOffsetX}}px);">
+                    <button
+                      class="voice-action-btn voice-main-action-btn voice-plain-btn svg-press-btn {{voiceHolding ? 'is-holding' : ''}}"
+                      hover-class="svg-press-btn-hover"
+                      hover-start-time="0"
+                      hover-stay-time="80"
+                      data-drag-handle="1"
+                      data-press-key="terminal:voice-main"
+                      bindtouchstart="onVoicePressStart"
+                      catchtouchmove="onVoiceLayerTouchMove"
+                      bindtouchend="onVoicePressEnd"
+                      bindtouchcancel="onVoicePressEnd"
+                    >
+                      <image
+                        class="voice-action-icon voice-main-action-icon svg-press-icon"
+                        src="{{pressedSvgButtonKey === 'terminal:voice-main' ? (terminalToolActiveIcons.voice || terminalToolIcons.voice || '/assets/icons/voice.svg') : (terminalToolIcons.voice || '/assets/icons/voice.svg')}}"
+                        mode="aspectFit"
+                      />
+                    </button>
+                    <button
+                      class="voice-action-btn voice-secondary-action-btn voice-plain-btn svg-press-btn"
+                      hover-class="svg-press-btn-hover"
+                      hover-start-time="0"
+                      hover-stay-time="80"
+                      data-press-key="terminal:voice-record"
+                      bindtouchstart="onSvgButtonTouchStart"
+                      bindtouchend="onSvgButtonTouchEnd"
+                      bindtouchcancel="onSvgButtonTouchEnd"
+                      bindtap="onRecordDraft"
+                    >
+                      <image
+                        class="voice-action-icon voice-secondary-action-icon svg-press-icon"
+                        src="{{pressedSvgButtonKey === 'terminal:voice-record' ? (terminalToolActiveIcons.record || terminalToolIcons.record || '/assets/icons/record.svg') : (terminalToolIcons.record || '/assets/icons/record.svg')}}"
+                        mode="aspectFit"
+                      />
+                    </button>
+                    <button
+                      class="voice-action-btn voice-secondary-action-btn voice-plain-btn svg-press-btn"
+                      hover-class="svg-press-btn-hover"
+                      hover-start-time="0"
+                      hover-stay-time="80"
+                      data-press-key="terminal:voice-send"
+                      bindtouchstart="onSvgButtonTouchStart"
+                      bindtouchend="onSvgButtonTouchEnd"
+                      bindtouchcancel="onSvgButtonTouchEnd"
+                      bindtap="onSendDraft"
+                    >
+                      <image
+                        class="voice-action-icon voice-secondary-action-icon svg-press-icon"
+                        src="{{pressedSvgButtonKey === 'terminal:voice-send' ? (terminalToolActiveIcons.sent || terminalToolIcons.sent || '/assets/icons/sent.svg') : (terminalToolIcons.sent || '/assets/icons/sent.svg')}}"
+                        mode="aspectFit"
+                      />
+                    </button>
+                  </view>
+                </view>
+                <view class="voice-actions-right">
+                  <button
+                    class="voice-action-btn voice-plain-btn svg-press-btn"
+                    hover-class="svg-press-btn-hover"
+                    hover-start-time="0"
+                    hover-stay-time="80"
+                    data-press-key="terminal:voice-clear-input"
+                    bindtouchstart="onSvgButtonTouchStart"
+                    bindtouchend="onSvgButtonTouchEnd"
+                    bindtouchcancel="onSvgButtonTouchEnd"
+                    bindtap="onClearDraft"
+                  >
+                    <image
+                      class="voice-action-icon svg-press-icon"
+                      src="{{pressedSvgButtonKey === 'terminal:voice-clear-input' ? (terminalToolActiveIcons.clearInput || terminalToolIcons.clearInput || '/assets/icons/clear-input.svg') : (terminalToolIcons.clearInput || '/assets/icons/clear-input.svg')}}"
+                      mode="aspectFit"
+                    />
+                  </button>
+                  <button
+                    class="voice-action-btn voice-plain-btn svg-press-btn"
+                    hover-class="svg-press-btn-hover"
+                    hover-start-time="0"
+                    hover-stay-time="80"
+                    data-press-key="terminal:voice-cancel"
+                    bindtouchstart="onSvgButtonTouchStart"
+                    bindtouchend="onSvgButtonTouchEnd"
+                    bindtouchcancel="onSvgButtonTouchEnd"
+                    bindtap="onCancelDraft"
+                  >
+                    <image
+                      class="voice-action-icon svg-press-icon"
+                      src="{{pressedSvgButtonKey === 'terminal:voice-cancel' ? (terminalToolActiveIcons.cancel || terminalToolIcons.cancel || '/assets/icons/cancel.svg') : (terminalToolIcons.cancel || '/assets/icons/cancel.svg')}}"
+                      mode="aspectFit"
+                    />
+                  </button>
+                </view>
+              </view>
+
+              <scroll-view class="voice-category-scroll" scroll-x="true" show-scrollbar="false">
+                <view class="voice-category-row">
+                  <view
+                    wx:for="{{voiceRecordCategories}}"
+                    wx:key="*this"
+                    class="voice-category-pill {{selectedRecordCategory === item ? 'active' : ''}}"
+                    data-category="{{item}}"
+                    bindtap="onSelectRecordCategory"
+                    >{{item}}</view
+                  >
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{sessionInfoVisible}}" class="session-info-mask" bindtap="onCloseSessionInfo">
+    <view class="session-info-panel" catchtap="noop">
+      <view class="connection-diagnostics-card session-info-card" style="{{sessionInfoTheme.cardStyle}}">
+        <text class="session-info-title" style="{{sessionInfoTheme.titleStyle}}">{{sessionInfoTitle}}</text>
+        <view class="session-info-hero" style="{{sessionInfoTheme.heroStyle}}">
+          <view class="session-info-hero-orb is-left"></view>
+          <view class="session-info-hero-orb is-right"></view>
+          <text class="session-info-hero-eyebrow">{{sessionInfoHero.eyebrow}}</text>
+          <text class="session-info-hero-name">{{sessionInfoHero.name}}</text>
+          <text class="session-info-hero-subtitle" user-select="true">{{sessionInfoHero.subtitle}}</text>
+          <text wx:if="{{sessionInfoHero.route}}" class="session-info-hero-route" user-select="true"
+            >{{sessionInfoHero.routeLabel}} · {{sessionInfoHero.route}}</text
+          >
+        </view>
+
+        <view class="session-info-status-grid">
+          <view
+            wx:for="{{sessionInfoStatusChips}}"
+            wx:key="key"
+            class="session-info-status-pill {{item.connected ? 'is-connected' : 'is-disconnected'}} {{((item.key === 'sshConnection' && !connectionActionDisabled) || (item.key === 'aiConnection' && !aiLaunchBusy)) ? 'is-actionable' : ''}}"
+            data-key="{{item.key}}"
+            bindtap="onSessionInfoStatusTap"
+          >
+            <view class="session-info-status-top">
+              <text class="session-info-status-label">{{item.label}}</text>
+              <text class="session-info-status-badge">{{item.badge}}</text>
+            </view>
+            <text class="session-info-status-value">{{item.value}}</text>
+            <text class="session-info-status-note">{{item.note}}</text>
+          </view>
+        </view>
+
+        <view class="session-info-detail-grid">
+          <view
+            wx:for="{{sessionInfoDetailItems}}"
+            wx:key="key"
+            class="session-info-detail-card {{item.wide ? 'is-wide' : ''}}"
+          >
+            <text class="session-info-detail-accent">{{item.accent}}</text>
+            <text class="session-info-detail-label">{{item.label}}</text>
+            <text class="session-info-detail-value" user-select="true">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view
+    wx:if="{{connectionDiagnosticsVisible}}"
+    class="connection-diagnostics-mask"
+    bindtap="onCloseConnectionDiagnostics"
+  >
+    <view class="connection-diagnostics-panel" catchtap="noop">
+      <view
+        class="connection-diagnostics-card connection-diagnostics-chart-card is-combined"
+        style="{{connectionDiagnosticCombinedChart.cardStyle}}"
+      >
+        <view class="connection-diagnostics-chart-head">
+          <view
+            class="connection-diagnostics-chart-metric is-response"
+            style="{{connectionDiagnosticCombinedChart.responseMetricStyle}}"
+          >
+            <text class="connection-diagnostics-chart-axis-pill is-response"
+              >{{connectionDiagnosticCombinedChart.responseCardLabel}}</text
+            >
+            <view class="connection-diagnostics-chart-stats-row">
+              <view
+                wx:for="{{connectionDiagnosticCombinedChart.responseStatItems}}"
+                wx:key="key"
+                class="connection-diagnostics-chart-stat-item"
+              >
+                <text class="connection-diagnostics-chart-stat-label">{{item.label}}</text>
+                <text class="connection-diagnostics-chart-stat-value is-response">{{item.valueLabel}}</text>
+                <text wx:if="{{item.divider}}" class="connection-diagnostics-chart-stat-divider">·</text>
+              </view>
+            </view>
+          </view>
+          <view
+            class="connection-diagnostics-chart-metric is-network"
+            style="{{connectionDiagnosticCombinedChart.networkMetricStyle}}"
+          >
+            <text class="connection-diagnostics-chart-axis-pill is-network"
+              >{{connectionDiagnosticCombinedChart.networkCardLabel}}</text
+            >
+            <view class="connection-diagnostics-chart-stats-row">
+              <view
+                wx:for="{{connectionDiagnosticCombinedChart.networkStatItems}}"
+                wx:key="key"
+                class="connection-diagnostics-chart-stat-item"
+              >
+                <text class="connection-diagnostics-chart-stat-label">{{item.label}}</text>
+                <text class="connection-diagnostics-chart-stat-value is-network">{{item.valueLabel}}</text>
+                <text wx:if="{{item.divider}}" class="connection-diagnostics-chart-stat-divider">·</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view
+          class="connection-diagnostics-chart-image-shell"
+          style="{{connectionDiagnosticCombinedChart.chartImageShellStyle}}"
+        >
+          <image
+            class="connection-diagnostics-chart-image"
+            src="{{connectionDiagnosticCombinedChart.imageUri}}"
+            mode="widthFix"
+            fade-show="{{false}}"
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+  <bottom-nav page="terminal" />
+</view>

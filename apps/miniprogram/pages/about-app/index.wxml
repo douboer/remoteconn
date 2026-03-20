@@ -1,0 +1,61 @@
+<view class="about-app-page" style="{{themeStyle}}">
+  <scroll-view class="about-app-scroll" scroll-y="true">
+    <view class="about-app-shell">
+      <view class="about-bg-orb about-bg-orb-left"></view>
+      <view class="about-bg-orb about-bg-orb-right"></view>
+
+      <view class="about-app-brand">
+        <image class="about-app-logo" src="/assets/icons/logo.svg" mode="aspectFit" />
+        <image class="about-app-wordmark" src="/assets/icons/remoteconn.svg" mode="widthFix" />
+        <image class="about-app-submark" src="/assets/icons/ai矩连.svg" mode="widthFix" />
+        <text class="about-app-version">{{versionLine}}</text>
+      </view>
+
+      <view class="about-app-card">
+        <view class="about-app-card-inner">
+          <text class="about-app-card-title">{{pageContent.sections[0].title}}</text>
+          <text wx:if="{{pageContent.lead}}" class="about-app-card-lead">{{pageContent.lead}}</text>
+
+          <view class="about-app-info-list">
+            <view wx:for="{{infoRows}}" wx:key="key" class="about-app-info-row">
+              <text wx:if="{{item.label}}" class="about-app-info-label">{{item.label}}</text>
+              <text class="about-app-info-value">{{item.value}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <button
+        class="about-app-share svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        open-type="share"
+        data-press-key="about-app:share"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+      >
+        <image
+          class="about-app-share-icon svg-press-icon"
+          src="{{pressedSvgButtonKey === 'about-app:share' ? (accentIcons.share || icons.share || '/assets/icons/share.svg') : (icons.share || '/assets/icons/share.svg')}}"
+          mode="aspectFit"
+        />
+        <text class="about-app-share-text">{{uiCopy.shareButton}}</text>
+      </button>
+
+      <view class="about-app-footer">
+        <text
+          wx:for="{{footerLinks}}"
+          wx:key="key"
+          class="about-app-footer-link"
+          data-path="{{item.path}}"
+          bindtap="onOpenLink"
+        >
+          {{item.title}}
+        </text>
+      </view>
+    </view>
+  </scroll-view>
+  <bottom-nav page="about-app" />
+</view>

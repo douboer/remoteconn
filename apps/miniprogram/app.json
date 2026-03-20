@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/connect/index",
+    "pages/server-settings/index",
+    "pages/terminal/index",
+    "pages/logs/index",
+    "pages/records/index",
+    "pages/settings/index",
+    "pages/plugins/index",
+    "pages/about/index",
+    "pages/about-manual/index",
+    "pages/about-feedback/index",
+    "pages/about-privacy/index",
+    "pages/about-changelog/index",
+    "pages/about-app/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "RemoteConn",
+    "navigationBarBackgroundColor": "#192b4d",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#192b4d",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "闪念",
+  "disableScroll": true,
+  "usingComponents": {
+    "bottom-nav": "/components/bottom-nav/index"
+  }
+}

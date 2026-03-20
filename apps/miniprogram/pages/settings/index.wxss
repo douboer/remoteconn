@@ -1,0 +1,459 @@
+.settings-page {
+  /* 统一设置项标签列和控件列的基线，避免不同控件各用一套尺寸。 */
+  --settings-label-width: 220rpx;
+  --settings-field-gap: 16rpx;
+  --settings-control-height: 64rpx;
+  --settings-color-trigger-padding-y: 10rpx;
+  --settings-color-trigger-padding-x: 14rpx;
+  --settings-color-bar-height: 24rpx;
+}
+
+.settings-tabs {
+  display: flex;
+  gap: 8rpx;
+  padding: 16px 32rpx 0;
+  flex-shrink: 0;
+}
+
+.settings-page .page-content {
+  padding-top: 16rpx;
+}
+
+.settings-tab-btn {
+  border: 1rpx solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 12rpx;
+  padding: 8rpx 16rpx;
+  font-size: 24rpx;
+  opacity: 0.75;
+}
+
+.settings-tab-btn.active {
+  background: var(--btn-bg-strong);
+  border-color: var(--btn-border-strong);
+  color: var(--btn-text);
+  opacity: 1;
+}
+
+.settings-panel {
+  padding-bottom: 16rpx;
+  gap: 20rpx;
+}
+
+.settings-header-actions {
+  justify-content: space-between;
+  margin-bottom: 4rpx;
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.settings-page .field-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.settings-page .field {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--settings-field-gap);
+  min-height: var(--settings-control-height);
+}
+
+.settings-page .field.wide {
+  width: 100%;
+}
+
+.settings-page .field > text {
+  width: var(--settings-label-width);
+  min-width: var(--settings-label-width);
+  max-width: var(--settings-label-width);
+  margin: 0;
+  color: var(--muted);
+  font-size: 22rpx;
+  line-height: 1.3;
+}
+
+.settings-page .field .input,
+.settings-page .field .picker-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-page .field .btn {
+  flex: 1;
+  min-width: 0;
+}
+
+.settings-page .field switch {
+  margin-left: auto;
+}
+
+.settings-section {
+  border: 1rpx solid var(--surface-border);
+  background: var(--surface);
+  border-radius: 16rpx;
+  padding: 14rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.settings-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.settings-section-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.settings-section-desc {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.terminal-style-preview {
+  width: 100%;
+  border: 1rpx solid var(--surface-border);
+  border-radius: 14rpx;
+  background: var(--surface);
+  padding: 12rpx 14rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin-bottom: 4rpx;
+}
+
+.terminal-style-preview-line {
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-style-preview-prompt {
+  font-weight: 600;
+}
+
+.picker-input {
+  display: flex;
+  align-items: center;
+}
+
+.settings-page .field.pill-field {
+  align-items: center;
+}
+
+.settings-page .field .field-stack {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 6rpx;
+}
+
+/* 设置页提示文案跟随主题色，避免浅色主题下提示几乎不可见。 */
+.settings-page .field .field-hint {
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 18rpx;
+  line-height: 1.35;
+}
+
+/* 字号提示放在输入框前方，同一行展示，避免单独占一行拉大纵向间距。 */
+.settings-page .field .field-inline-row {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.settings-page .field .field-hint.field-hint-inline {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-page .field .field-inline-input {
+  flex: 0 0 128rpx;
+  width: 128rpx;
+  min-width: 128rpx;
+}
+
+.segment-control {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--settings-control-height);
+  display: flex;
+  align-items: center;
+  /* gap 与外侧留白必须同值；否则激活态外扩 ring 会让端侧可见间距更窄。 */
+  padding: 6rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid var(--btn-border);
+  background: var(--icon-btn-bg);
+  gap: 6rpx;
+}
+
+.segment-item {
+  flex: 1;
+  min-width: 0;
+  height: 50rpx;
+  border-radius: 999rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  line-height: 1;
+  color: var(--muted);
+  font-weight: 500;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.segment-item.active {
+  background: var(--accent-bg-strong);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 0 0 2rpx var(--accent-ring);
+}
+
+.pill-chip {
+  min-height: 52rpx;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid var(--btn-border);
+  background: var(--icon-btn-bg);
+  color: var(--btn-text);
+  font-size: 22rpx;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.2rpx;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.pill-chip.active {
+  border-color: var(--accent-border);
+  background: var(--accent-bg-strong);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow:
+    0 0 0 2rpx var(--accent-ring),
+    0 8rpx 18rpx var(--accent-shadow);
+}
+
+.pill-scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 56rpx;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.pill-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  min-width: 100%;
+  min-height: 56rpx;
+  padding: 2rpx 2rpx 4rpx;
+}
+
+.pill-chip.font-pill {
+  max-width: 260rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-page .field.color-field {
+  flex-wrap: wrap;
+  row-gap: 8rpx;
+}
+
+.settings-page .field.color-field .color-trigger {
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: var(--settings-color-trigger-padding-y) var(--settings-color-trigger-padding-x);
+  border-radius: 999rpx;
+}
+
+.color-trigger {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.color-bar {
+  width: 100%;
+  height: var(--settings-color-bar-height);
+  border-radius: 999rpx;
+  overflow: hidden;
+  border: 1rpx solid var(--btn-border);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.color-bar-fill {
+  width: 100%;
+  height: 100%;
+}
+
+.color-palette-grid {
+  width: calc(100% - var(--settings-label-width) - var(--settings-field-gap));
+  margin-left: calc(var(--settings-label-width) + var(--settings-field-gap));
+  margin-top: 8rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+}
+
+.palette-swatch-wrap {
+  width: 44rpx;
+  height: 44rpx;
+  padding: 3rpx;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  border: 1rpx solid transparent;
+}
+
+.palette-swatch-wrap.active {
+  border-color: var(--btn-border-strong);
+  background: var(--btn-bg-strong);
+}
+
+.palette-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 8rpx;
+  border: 1rpx solid rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+}
+
+.category-create-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.category-create-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.category-create-btn {
+  flex: 0 0 128rpx;
+}
+
+.settings-inline-label {
+  display: block;
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.voice-category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  position: relative;
+}
+
+.voice-category-grid.dragging {
+  overflow: visible;
+}
+
+.voice-category-card {
+  width: calc((100% - 24rpx) / 3);
+  min-width: 0;
+  border: 1rpx solid var(--surface-border);
+  border-radius: 16rpx;
+  background: var(--surface);
+  padding: 16rpx 14rpx;
+  transition:
+    transform 180ms ease,
+    border-color 140ms ease,
+    background 140ms ease,
+    box-shadow 140ms ease,
+    opacity 140ms ease;
+  will-change: transform;
+}
+
+.voice-category-card.is-selected {
+  border-color: rgba(91, 210, 255, 0.72);
+  background: rgba(91, 210, 255, 0.14);
+  box-shadow: 0 6rpx 18rpx rgba(42, 92, 182, 0.22);
+}
+
+.voice-category-card.is-dragging {
+  transition: none;
+  opacity: 0.72;
+  box-shadow: 0 12rpx 28rpx rgba(0, 0, 0, 0.28);
+}
+
+.voice-category-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  min-width: 0;
+}
+
+.voice-category-card-name {
+  flex: 1;
+  min-width: 0;
+  color: var(--text);
+  font-size: 24rpx;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.voice-category-card-badge {
+  flex: 0 0 auto;
+  padding: 4rpx 10rpx;
+  border-radius: 999rpx;
+  background: rgba(91, 210, 255, 0.2);
+  color: var(--text);
+  font-size: 18rpx;
+  line-height: 1;
+}
+
+.voice-category-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12rpx;
+}
+
+.compact-btn {
+  min-width: 132rpx;
+}

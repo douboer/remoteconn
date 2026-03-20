@@ -1,0 +1,391 @@
+/**
+ * 小程序全局样式：
+ * 1. 颜色变量与当前小程序基线 v2.9.1 保持一致；
+ * 2. 抽取页面骨架、工具栏、面板、按钮、底栏等通用样式；
+ * 3. 页面只做局部差异，尽量复用这里的语义类。
+ */
+page {
+  --bg: #192b4d;
+  --shell-bg: #192b4d;
+  --shell-text: #e6f0ff;
+  --shell-accent: #9ca9bf;
+  --shell-font-family: JetBrains Mono, "SFMono-Regular", Menlo, monospace;
+  --shell-font-size: 15px;
+  --shell-line-height: 1.4;
+  --surface: rgba(20, 32, 56, 0.64);
+  --surface-border: rgba(118, 156, 213, 0.2);
+  --surface-shadow: rgba(91, 210, 255, 0.18);
+  --text: #e6f0ff;
+  --muted: #9cb1cf;
+  --accent: #5bd2ff;
+  --btn: #adb9cd;
+  --btn-border: #7e8ca4;
+  --btn-border-strong: #95a2b9;
+  --btn-bg: #374767;
+  --btn-bg-strong: #4b5b79;
+  --btn-bg-active: #3f506e;
+  --btn-text: #dce6f6;
+  --btn-danger-border: #4eb1db;
+  --btn-danger-bg: #285074;
+  --chip-bg: #2b5a7f;
+  --chip-text: #e6f0ff;
+  --accent-divider: rgba(91, 210, 255, 0.6);
+  --switch-on-bg: #6f7d97;
+  --switch-off-bg: #4a5a78;
+  --switch-knob: #f1f7ff;
+  --icon-btn-bg: #2e3f5f;
+  --icon-btn-bg-strong: #3d4d6c;
+  --accent-bg: #25496d;
+  --accent-bg-strong: #2e6086;
+  --accent-border: #49a3cd;
+  --accent-ring: rgba(91, 210, 255, 0.22);
+  --accent-shadow: rgba(91, 210, 255, 0.28);
+  --shell-btn-bg: #50607d;
+  --shell-btn-text: #c1cddf;
+  --shell-accent-bg: #314262;
+  --shell-accent-bg-strong: #435371;
+  --shell-accent-border: #7a88a1;
+  --shell-accent-ring: rgba(156, 169, 191, 0.24);
+  --shell-accent-shadow: rgba(156, 169, 191, 0.3);
+  --terminal-touch-tools-bg: rgba(25, 43, 77, 0.8);
+  --danger: #ff7f92;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 26rpx;
+  font-family: "PingFang SC", "SF Pro Text", "Microsoft YaHei", sans-serif;
+}
+
+view,
+text,
+input,
+textarea,
+button {
+  box-sizing: border-box;
+}
+
+button::after {
+  border: none;
+}
+
+button {
+  position: relative;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+}
+
+.page-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.page-toolbar {
+  flex: 0 0 72rpx;
+  height: 72rpx;
+  background: var(--bg);
+  border-bottom: 1rpx solid var(--accent-divider);
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 0 32rpx;
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 32rpx;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.settings-save-status {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.page-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 16rpx 16rpx 0;
+}
+
+.surface-panel {
+  background: var(--bg);
+  border-top: 1rpx solid transparent;
+  border-bottom: 1rpx solid transparent;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  overflow: hidden;
+}
+
+.surface-scroll {
+  min-height: 0;
+  overflow: auto;
+}
+
+.list-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.card {
+  border: 1rpx solid var(--surface-border);
+  background: var(--surface);
+  border-radius: 20rpx;
+  padding: 18rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row.between {
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.icon-btn {
+  width: 48rpx !important;
+  height: 48rpx !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 0 !important;
+  display: inline-flex !important;
+  overflow: visible !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+.icon-btn.disabled,
+.icon-btn.wx-button-disabled {
+  opacity: 0.45 !important;
+}
+
+.icon-img {
+  width: 44rpx;
+  height: 44rpx;
+  display: block;
+}
+
+/**
+ * 统一 SVG 按钮按压反馈：
+ * 1. 所有页面共用同一套 hover-class / touch 状态，不再各页散写重复动画；
+ * 2. 默认只负责过渡和图标缩放，不强行改常态背景，具体底板/阴影由各页面覆写变量；
+ * 3. 带文字按钮也能复用，只需覆写圆角、缩放和 hover 背景变量。
+ */
+.svg-press-btn {
+  --svg-press-active-radius: 999rpx;
+  --svg-press-active-bg: transparent;
+  --svg-press-active-shadow: none;
+  --svg-press-active-scale: 0.92;
+  --svg-press-icon-opacity: 1;
+  --svg-press-icon-active-opacity: 0.7;
+  --svg-press-icon-active-scale: 0.9;
+  transition:
+    border-radius 160ms ease,
+    transform 140ms ease,
+    background-color 140ms ease,
+    box-shadow 140ms ease,
+    opacity 140ms ease;
+  will-change: transform;
+}
+
+.svg-press-btn .svg-press-icon {
+  opacity: var(--svg-press-icon-opacity);
+  transform: translateY(0) scale(1);
+  transition:
+    transform 140ms ease,
+    opacity 140ms ease;
+}
+
+.svg-press-btn:active,
+.svg-press-btn-hover {
+  border-radius: var(--svg-press-active-radius) !important;
+  background: var(--svg-press-active-bg) !important;
+  background-color: var(--svg-press-active-bg) !important;
+  box-shadow: var(--svg-press-active-shadow) !important;
+  transform: scale(var(--svg-press-active-scale));
+}
+
+.svg-press-btn:active .svg-press-icon,
+.svg-press-btn-hover .svg-press-icon {
+  opacity: var(--svg-press-icon-active-opacity);
+  transform: translateY(1rpx) scale(var(--svg-press-icon-active-scale));
+}
+
+.svg-press-btn.disabled,
+.svg-press-btn.wx-button-disabled {
+  transform: none !important;
+}
+
+.btn {
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 1rpx solid var(--btn-border) !important;
+  background: var(--btn-bg) !important;
+  background-color: var(--btn-bg) !important;
+  color: var(--btn-text) !important;
+  border-radius: 16rpx;
+  padding: 8rpx 14rpx;
+  font-size: 24rpx;
+  line-height: 1.4;
+}
+
+.btn.primary {
+  background: var(--btn-bg-strong);
+  border-color: var(--btn-border-strong);
+}
+
+.btn.danger {
+  border-color: var(--btn-danger-border);
+  background: var(--btn-danger-bg);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border-radius: 16rpx;
+  border: 1rpx solid rgba(141, 187, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  padding: 14rpx 16rpx;
+  font-size: 24rpx;
+}
+
+.input {
+  height: 64rpx;
+}
+
+.field-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  width: calc((100% - 12rpx) / 2);
+  min-width: 0;
+}
+
+.field.wide {
+  width: 100%;
+}
+
+.field text {
+  color: var(--muted);
+  font-size: 22rpx;
+}
+
+.state-chip {
+  border-radius: 999rpx;
+  padding: 4rpx 10rpx;
+  border: 1rpx solid var(--btn-border);
+  background: var(--btn-bg);
+  font-size: 20rpx;
+  color: var(--btn-text);
+}
+
+.state-connected {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+  color: var(--text);
+}
+
+.state-error {
+  border-color: var(--danger);
+  background: var(--btn-danger-bg);
+  color: var(--text);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.empty {
+  color: var(--muted);
+  text-align: center;
+  padding: 28rpx 0;
+}
+
+.bottom-bar {
+  flex: 0 0 104rpx;
+  height: 104rpx;
+  background: var(--bg);
+  border-top: 1rpx solid var(--accent-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64rpx 0 32rpx;
+}
+
+.bottom-right-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.bottom-nav-btn.active {
+  background: var(--btn-bg-active);
+}
+
+.records-pagination {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding-top: 8rpx;
+}
+
+.records-pagination-text {
+  min-width: 180rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--muted);
+}

@@ -1,0 +1,194 @@
+<view class="page-root records-page" style="{{themeStyle}}">
+  <view class="page-content">
+    <view class="surface-panel records-panel">
+      <view class="records-search-wrap">
+        <view class="records-search-shell">
+          <input
+            class="records-search-input"
+            type="text"
+            placeholder="{{copy.searchPlaceholder}}"
+            placeholder-class="records-search-input-placeholder"
+            value="{{query}}"
+            bindinput="onQueryInput"
+          />
+          <button class="records-filter-btn" bindtap="onToggleCategoryMenu">
+            <text class="records-filter-arrow">{{categoryMenuVisible ? '▲' : '▼'}}</text>
+          </button>
+        </view>
+
+        <view wx:if="{{categoryMenuVisible}}" class="records-filter-menu">
+          <view
+            class="records-filter-option {{selectedCategory === '' ? 'active' : ''}}"
+            data-category=""
+            bindtap="onSelectFilterCategory"
+            >{{copy.allCategories}}</view
+          >
+          <view
+            wx:for="{{categoryOptions}}"
+            wx:key="*this"
+            class="records-filter-option {{selectedCategory === item ? 'active' : ''}}"
+            data-category="{{item}}"
+            bindtap="onSelectFilterCategory"
+            >{{item}}</view
+          >
+        </view>
+      </view>
+
+      <scroll-view class="surface-scroll records-list-scroll" scroll-y="true">
+        <view class="list-stack records-list" bindtap="onListTap">
+          <view
+            wx:for="{{rows}}"
+            wx:key="id"
+            class="record-item-shell {{item.isMuted ? 'record-item-shell-muted' : ''}}"
+            data-id="{{item.id}}"
+            bindtouchstart="onRecordTouchStart"
+            bindtouchmove="onRecordTouchMove"
+            bindtouchend="onRecordTouchEnd"
+            bindtouchcancel="onRecordTouchEnd"
+          >
+            <view class="record-item-actions-wrap {{(item.swipeOffsetX || 0) < 0 ? 'opened' : ''}}">
+              <button class="record-swipe-copy-btn" data-id="{{item.id}}" catchtap="onCopy">
+                <text class="record-swipe-btn-text">{{copy.swipeCopy}}</text>
+              </button>
+              <button class="record-swipe-processed-btn" data-id="{{item.id}}" catchtap="onMarkProcessed">
+                <text class="record-swipe-btn-text">{{copy.swipeProcessed}}</text>
+              </button>
+              <button class="record-swipe-discarded-btn" data-id="{{item.id}}" catchtap="onMarkDiscarded">
+                <text class="record-swipe-btn-text">{{copy.swipeDiscarded}}</text>
+              </button>
+              <button class="record-swipe-delete-btn" data-id="{{item.id}}" catchtap="onDelete">
+                <text class="record-swipe-btn-text">{{copy.swipeDelete}}</text>
+              </button>
+            </view>
+
+            <view class="record-item-track" style="transform: translateX({{item.swipeOffsetX || 0}}px);">
+              <view class="record-item-main">
+                <view class="record-item-category-hitbox" data-id="{{item.id}}" catchtap="onQuickCategoryTap">
+                  <view
+                    id="quick-category-{{item.id}}"
+                    class="record-item-category"
+                    style="{{item.categoryStyle}}"
+                  >
+                    <text class="record-item-category-text">{{item.displayCategory}}</text>
+                  </view>
+                </view>
+
+                <view
+                  class="card record-item {{item.processed ? 'record-item-processed' : ''}}"
+                  data-id="{{item.id}}"
+                  bindtap="onOpenEdit"
+                >
+                  <view class="record-item-header">
+                    <text class="record-item-time">{{item.timeText}}</text>
+                    <text class="record-item-context">{{item.contextLabelText}}</text>
+                  </view>
+                  <text class="record-item-content {{item.discarded ? 'record-item-content-discarded' : ''}}">{{item.content || '--'}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <text wx:if="{{rows.length === 0}}" class="empty">{{copy.empty}}</text>
+        </view>
+      </scroll-view>
+
+      <view class="records-footer">
+        <view class="records-pagination">
+          <button class="btn" disabled="{{page <= 1}}" bindtap="onPrev">{{copy.prev}}</button>
+          <text class="records-pagination-text">{{pageIndicatorText}}</text>
+          <button class="btn" disabled="{{page >= totalPages}}" bindtap="onNext">{{copy.next}}</button>
+        </view>
+        <view class="records-footer-actions">
+          <button
+            class="btn records-footer-action-btn svg-press-btn"
+            hover-class="svg-press-btn-hover"
+            hover-start-time="0"
+            hover-stay-time="80"
+            data-press-key="records:add"
+            bindtouchstart="onSvgButtonTouchStart"
+            bindtouchend="onSvgButtonTouchEnd"
+            bindtouchcancel="onSvgButtonTouchEnd"
+            bindtap="onOpenCreate"
+          >
+            <image
+              class="records-footer-action-icon svg-press-icon"
+              src="{{pressedSvgButtonKey === 'records:add' ? (accentIcons.add || icons.add || '/assets/icons/add.svg') : (icons.add || '/assets/icons/add.svg')}}"
+              mode="aspectFit"
+            />
+            <text>{{copy.addButton}}</text>
+          </button>
+          <button class="btn" bindtap="onExport">{{copy.exportButton}}</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{quickCategoryPopupVisible}}" class="records-quick-mask" bindtap="closeQuickCategoryPopup">
+    <view class="records-quick-panel" style="{{quickCategoryPanelStyle}}" catchtap="noop">
+      <view
+        class="records-quick-cloud"
+        style="width: {{quickCategoryWidthPx}}px; height: {{quickCategoryHeightPx}}px;"
+      >
+        <button
+          wx:for="{{quickCategoryItems}}"
+          wx:key="category"
+          class="records-quick-bubble {{item.active ? 'active' : ''}}"
+          style="{{item.style}} {{item.categoryStyle}}"
+          data-category="{{item.category}}"
+          bindtap="onApplyQuickCategory"
+        >
+          {{item.category}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{editPopupVisible}}" class="records-edit-mask" bindtap="onCloseEdit">
+    <view class="records-edit-panel" catchtap="noop">
+      <scroll-view class="records-edit-category-scroll" scroll-x="true" show-scrollbar="false">
+        <view class="records-edit-category-row">
+          <view
+            wx:for="{{categoryOptions}}"
+            wx:key="*this"
+            class="records-edit-category-pill {{editCategory === item ? 'active' : ''}}"
+            data-category="{{item}}"
+            bindtap="onEditCategoryTap"
+            >{{item}}</view
+          >
+        </view>
+      </scroll-view>
+
+      <textarea
+        class="records-edit-textarea"
+        value="{{editContent}}"
+        maxlength="-1"
+        auto-height
+        placeholder="{{copy.editPlaceholder}}"
+        bindinput="onEditContentInput"
+      />
+
+      <text class="records-edit-time">{{editUpdatedAtLabel}}</text>
+
+      <button
+        class="records-edit-close-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="records:close-edit"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onCloseEdit"
+        aria-label="{{copy.closeEditAriaLabel}}"
+      >
+        <image
+          class="records-edit-close-icon svg-press-icon"
+          src="{{pressedSvgButtonKey === 'records:close-edit' ? (accentIcons.cancel || icons.cancel || '/assets/icons/cancel.svg') : (icons.cancel || '/assets/icons/cancel.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+    </view>
+  </view>
+
+  <bottom-nav page="records" />
+</view>

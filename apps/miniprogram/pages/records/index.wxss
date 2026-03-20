@@ -1,0 +1,498 @@
+.records-page .page-content {
+  padding-top: 16rpx;
+}
+
+.records-panel {
+  padding: 0 0 16rpx;
+  gap: 16rpx;
+}
+
+.records-search-wrap {
+  position: relative;
+  z-index: 3;
+}
+
+.records-search-shell {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  height: 64rpx;
+  border: 1rpx solid var(--surface-border);
+  border-radius: 54rpx;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.records-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 22rpx;
+  line-height: normal;
+  padding: 0 16rpx;
+}
+
+.records-search-input-placeholder {
+  color: var(--muted);
+}
+
+.records-filter-btn {
+  flex: 0 0 88rpx;
+  width: 88rpx !important;
+  min-width: 88rpx !important;
+  height: 100% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-left: 1rpx solid var(--surface-border);
+  border-radius: 0 !important;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  padding: 0 16rpx !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.records-filter-arrow {
+  flex: 0 0 auto;
+  font-size: 22rpx;
+  line-height: 1;
+}
+
+.records-filter-menu {
+  margin-top: 12rpx;
+  padding: 10rpx;
+  border: 1rpx solid var(--surface-border);
+  border-radius: 18rpx;
+  background: var(--surface);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  box-shadow: 0 14rpx 30rpx var(--surface-shadow);
+}
+
+.records-filter-option {
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid var(--surface-border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 22rpx;
+  line-height: 1.1;
+}
+
+.records-filter-option.active {
+  border-color: rgba(91, 210, 255, 0.78);
+  background: rgba(91, 210, 255, 0.18);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.records-list-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.records-list {
+  min-height: 0;
+  padding-bottom: 8rpx;
+}
+
+.record-item-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20rpx;
+  transition: opacity 160ms ease;
+}
+
+.record-item-shell-muted {
+  opacity: 0.6;
+}
+
+.record-item-actions-wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 240rpx;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.record-item-actions-wrap.opened {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.record-swipe-copy-btn,
+.record-swipe-delete-btn,
+.record-swipe-processed-btn,
+.record-swipe-discarded-btn {
+  width: 25% !important;
+  flex: 1 1 0;
+  height: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: #f7fbff !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx !important;
+  line-height: 1 !important;
+  padding: 0 !important;
+}
+
+.record-swipe-copy-btn {
+  border-radius: 20rpx 0 0 20rpx !important;
+  background: rgba(101, 130, 149, 0.8) !important;
+}
+
+.record-swipe-delete-btn {
+  border-radius: 0 20rpx 20rpx 0 !important;
+  background: rgba(164, 118, 118, 0.8) !important;
+}
+
+.record-swipe-processed-btn {
+  border-radius: 0 !important;
+  background: rgba(124, 145, 114, 0.8) !important;
+}
+
+.record-swipe-discarded-btn {
+  border-radius: 0 !important;
+  background: rgba(118, 124, 136, 0.8) !important;
+}
+
+.record-swipe-btn-text {
+  /* 左滑动作区维持竖排文案，适配四个窄按钮且不引入额外 gap。 */
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 2rpx;
+  font-size: 22rpx;
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+.record-item-track {
+  position: relative;
+  z-index: 1;
+  transition: transform 160ms ease;
+  will-change: transform;
+}
+
+.record-item-main {
+  display: flex;
+  align-items: stretch;
+  gap: 2rpx;
+}
+
+.record-item-category-hitbox {
+  /* 分类条视觉宽度不变，只把横向热区扩到约 2 倍。 */
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0 24rpx;
+  margin: 0 -24rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.record-item-category {
+  flex: 0 0 auto;
+  width: 48rpx;
+  min-width: 48rpx;
+  border: 1rpx solid transparent;
+  border-radius: 18rpx 0 0 18rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 10rpx 6rpx;
+}
+
+.record-item-category-text {
+  color: var(--text);
+  font-size: 20rpx;
+  line-height: 1.1;
+  text-align: center;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.record-item {
+  flex: 1;
+  min-width: 0;
+  border-radius: 0 18rpx 18rpx 0;
+}
+
+.record-item-processed {
+  /* 已处理态改成更亮的浅绿底，拉开与深绿正文的反差，避免在移动端上糊成一片。 */
+  background: linear-gradient(180deg, rgba(226, 238, 213, 0.96), rgba(206, 224, 188, 0.94));
+  border-color: rgba(109, 136, 95, 0.62);
+}
+
+.record-item-processed .record-item-time,
+.record-item-processed .record-item-context {
+  color: #58714f;
+}
+
+.record-item-processed .record-item-content {
+  color: #34513a;
+}
+
+.record-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12rpx;
+}
+
+.record-item-time {
+  flex: 0 0 auto;
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.record-item-context {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  color: var(--muted);
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-item-content {
+  display: block;
+  margin-top: 10rpx;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.6;
+  font-size: 24rpx;
+}
+
+.record-item-content-discarded {
+  text-decoration: line-through;
+  text-decoration-thickness: 2rpx;
+}
+
+.records-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.records-footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.records-footer-action-btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  --svg-press-active-radius: 16rpx;
+  --svg-press-active-bg: var(--btn-bg-active);
+  --svg-press-active-shadow: none;
+  --svg-press-active-scale: 1;
+  --svg-press-icon-opacity: 0.96;
+  --svg-press-icon-active-opacity: 0.72;
+  --svg-press-icon-active-scale: 0.92;
+}
+
+.records-footer-action-icon {
+  width: 26rpx;
+  height: 26rpx;
+  display: block;
+}
+
+.records-pagination {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.records-pagination-text {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.records-edit-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+  background: rgba(5, 11, 24, 0.54);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx;
+  box-sizing: border-box;
+}
+
+.records-quick-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 38;
+  background: rgba(5, 11, 24, 0.2);
+}
+
+.records-quick-panel {
+  position: absolute;
+  padding: 12rpx;
+  border-radius: 24rpx;
+  background: rgba(13, 24, 42, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.records-quick-cloud {
+  position: relative;
+}
+
+.records-quick-bubble {
+  position: absolute;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  border: 1rpx solid transparent !important;
+  border-radius: 999rpx !important;
+  padding: 0 !important;
+  color: var(--text) !important;
+  font-size: 20rpx !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  box-shadow: 0 10rpx 24rpx rgba(15, 35, 68, 0.18);
+}
+
+.records-quick-bubble.active {
+  box-shadow:
+    0 0 0 2rpx rgba(255, 255, 255, 0.18),
+    0 10rpx 24rpx rgba(42, 92, 182, 0.24);
+  transform: scale(1.05);
+}
+
+.records-edit-panel {
+  position: relative;
+  width: 100%;
+  max-width: 680rpx;
+  border-radius: 28rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--surface-border);
+  padding: 24rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  box-shadow: 0 18rpx 42rpx var(--surface-shadow);
+}
+
+.records-edit-category-scroll {
+  width: calc(100% - 56rpx);
+  white-space: nowrap;
+}
+
+.records-edit-category-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10rpx;
+  min-width: 100%;
+}
+
+.records-edit-category-pill {
+  flex: 0 0 auto;
+  min-height: 52rpx;
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid var(--surface-border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 22rpx;
+  line-height: 1.1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.records-edit-category-pill.active {
+  border-color: rgba(91, 210, 255, 0.78);
+  background: rgba(91, 210, 255, 0.18);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.records-edit-textarea {
+  width: 100%;
+  min-height: 240rpx;
+  border: 1rpx solid var(--surface-border);
+  border-radius: 20rpx;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 26rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+  padding: 18rpx 20rpx;
+}
+
+.records-edit-time {
+  font-size: 22rpx;
+  color: var(--muted);
+  padding-right: 48rpx;
+}
+
+.records-edit-close-btn {
+  position: absolute;
+  right: 24rpx;
+  top: 24rpx;
+  width: 40rpx !important;
+  min-width: 40rpx !important;
+  height: 40rpx !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 999rpx !important;
+  background: transparent !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  --svg-press-active-radius: 999rpx;
+  --svg-press-active-bg: rgba(156, 169, 191, 0.24);
+  --svg-press-active-shadow:
+    inset 0 0 0 1rpx rgba(210, 220, 236, 0.34),
+    0 0 0 8rpx rgba(156, 169, 191, 0.12);
+  --svg-press-active-scale: 0.9;
+  --svg-press-icon-opacity: 0.96;
+  --svg-press-icon-active-opacity: 0.68;
+  --svg-press-icon-active-scale: 0.88;
+}
+
+.records-edit-close-icon {
+  width: 32rpx;
+  height: 32rpx;
+}

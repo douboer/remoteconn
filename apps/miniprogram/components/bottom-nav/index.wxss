@@ -1,0 +1,94 @@
+.bottom-bar {
+  flex: 0 0 104rpx;
+  height: 104rpx;
+  background: var(--bg);
+  border-top: 1rpx solid var(--accent-divider);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 64rpx 0 32rpx;
+}
+
+.bottom-right-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.icon-btn {
+  width: 48rpx !important;
+  height: 48rpx !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: inherit !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 0 !important;
+  display: inline-flex !important;
+  overflow: visible !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+.bottom-nav-btn {
+  border-radius: 999rpx !important;
+  --svg-press-active-radius: 999rpx;
+  --svg-press-active-bg: var(--icon-btn-bg-strong);
+  --svg-press-active-shadow: 0 0 0 8rpx var(--accent-ring);
+  --svg-press-active-scale: 0.9;
+  --svg-press-icon-opacity: 0.96;
+  --svg-press-icon-active-opacity: 0.68;
+  --svg-press-icon-active-scale: 0.88;
+}
+
+.icon-btn::after {
+  border: none;
+}
+
+.icon-btn.is-disabled {
+  opacity: 0.45 !important;
+}
+
+.icon-btn.wx-button-disabled {
+  opacity: 0.45 !important;
+}
+
+.icon-img {
+  width: 44rpx;
+  height: 44rpx;
+  display: block;
+}
+
+.bottom-nav-text {
+  font-size: 20rpx;
+  line-height: 1;
+  font-weight: 600;
+  color: var(--btn-text);
+}
+
+.bottom-nav-btn.active {
+  background: var(--icon-btn-bg) !important;
+  background-color: var(--icon-btn-bg) !important;
+  box-shadow: inset 0 0 0 1rpx var(--accent-border);
+}
+
+.bottom-nav-btn.connection-active {
+  background: var(--accent) !important;
+  background-color: var(--accent) !important;
+  box-shadow: 0 10rpx 24rpx var(--accent-shadow) !important;
+  --svg-press-active-bg: var(--accent);
+  --svg-press-active-shadow:
+    0 0 0 8rpx var(--accent-ring),
+    0 10rpx 24rpx var(--accent-shadow);
+  --svg-press-icon-active-opacity: 0.92;
+  --svg-press-icon-active-scale: 0.94;
+}
+
+.bottom-nav-btn.connection-active .bottom-nav-text {
+  color: var(--text);
+}

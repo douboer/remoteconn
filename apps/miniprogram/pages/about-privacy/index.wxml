@@ -1,0 +1,28 @@
+<view class="about-page" style="{{themeStyle}}">
+  <scroll-view class="about-scroll" scroll-y="true">
+    <view class="about-shell">
+      <view class="about-bg-orb about-bg-orb-left"></view>
+      <view class="about-bg-orb about-bg-orb-right"></view>
+
+      <view class="about-stack">
+        <view class="detail-chip">{{brand.chineseName}}</view>
+        <view class="detail-card">
+          <text class="detail-title">{{pageContent.title}}</text>
+          <text class="detail-lead">{{pageContent.lead}}</text>
+        </view>
+
+        <view wx:for="{{pageContent.sections}}" wx:key="title" class="detail-card detail-section-list">
+          <text class="detail-section-title">{{item.title}}</text>
+          <text wx:for="{{item.paragraphs}}" wx:key="index" class="detail-paragraph">{{item}}</text>
+          <view wx:if="{{item.bullets && item.bullets.length}}" class="detail-bullet-list">
+            <view wx:for="{{item.bullets}}" wx:key="index" class="detail-bullet-row">
+              <text class="detail-bullet-dot">•</text>
+              <text class="detail-bullet-text">{{item}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <bottom-nav page="about-privacy" />
+</view>

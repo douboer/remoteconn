@@ -1,0 +1,95 @@
+.plugins-content {
+  padding-top: 16rpx;
+}
+
+.plugins-panel {
+  padding: 0 0 16rpx;
+}
+
+.plugin-summary {
+  margin-bottom: 16rpx;
+  gap: 8rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.plugins-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.plugins-sections {
+  min-height: 0;
+}
+
+.plugin-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.plugin-record {
+  border: 1rpx solid var(--surface-border);
+  border-radius: 16rpx;
+  background: var(--surface);
+  padding: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.plugin-record-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8rpx;
+}
+
+.plugin-record-title {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.plugin-record-sub {
+  font-size: 22rpx;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.plugin-actions {
+  gap: 8rpx;
+}
+
+.plugin-json-input {
+  min-height: 220rpx;
+  width: 100%;
+}
+
+.plugin-command-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.plugin-command-btn {
+  flex: 0 0 auto;
+}
+
+.plugin-log-box {
+  border: 1rpx solid var(--surface-border);
+  border-radius: 16rpx;
+  background: var(--surface);
+  padding: 12rpx;
+  max-height: 320rpx;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.plugin-log-line {
+  color: var(--text);
+  font-size: 22rpx;
+  line-height: 1.4;
+  word-break: break-all;
+}

@@ -1,0 +1,24 @@
+# 依赖目录
+node_modules/
+
+# 构建产物
+**/dist/
+**/coverage/
+
+# 本地环境变量
+.env
+.env.*
+!.env.example
+
+# 日志与缓存
+npm-debug.log*
+.DS_Store
+.npm-cache/
+data/tts-cache/
+
+# 小程序本地运维配置（由 .env 生成）
+apps/miniprogram/utils/opsEnv.js
+docs
+data
+artifacts
+

@@ -1,0 +1,220 @@
+<view class="page-root server-manager-page" style="{{themeStyle}}">
+  <view class="page-toolbar server-manager-toolbar">
+    <view class="toolbar-left">
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="connect:create"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onCreateServer"
+      >
+        <image
+          wx:if="{{!textIconMode}}"
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'connect:create' ? (accentIcons.create || icons.create || '/assets/icons/create.svg') : (icons.create || '/assets/icons/create.svg')}}"
+          mode="aspectFit"
+        />
+        <text wx:else class="debug-icon-text">{{copy.textIcons.create}}</text>
+      </button>
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="connect:remove"
+        disabled="{{selectedServerIds.length === 0}}"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onRemoveSelected"
+      >
+        <image
+          wx:if="{{!textIconMode}}"
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'connect:remove' ? (accentIcons.delete || icons.delete || '/assets/icons/delete.svg') : (icons.delete || '/assets/icons/delete.svg')}}"
+          mode="aspectFit"
+        />
+        <text wx:else class="debug-icon-text">{{copy.textIcons.remove}}</text>
+      </button>
+      <button
+        class="icon-btn toolbar-plain-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="connect:selectall"
+        disabled="{{servers.length === 0}}"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onToggleSelectAll"
+      >
+        <image
+          wx:if="{{!textIconMode}}"
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'connect:selectall' ? (accentIcons.selectall || icons.selectall || '/assets/icons/selectall.svg') : (icons.selectall || '/assets/icons/selectall.svg')}}"
+          mode="aspectFit"
+        />
+        <text wx:else class="debug-icon-text">{{copy.textIcons.selectAll}}</text>
+      </button>
+    </view>
+    <view class="toolbar-spacer"></view>
+    <text class="page-title">{{copy.pageTitle}}</text>
+  </view>
+
+  <view class="page-content server-manager-content">
+    <view class="server-search-wrap">
+      <view class="server-search-shell">
+        <input class="server-search-input" type="text" placeholder="{{copy.searchPlaceholder}}" value="{{query}}" bindinput="onQueryInput" />
+        <button
+          class="server-search-btn svg-press-btn"
+          hover-class="svg-press-btn-hover"
+          hover-start-time="0"
+          hover-stay-time="80"
+          data-press-key="connect:search"
+          bindtouchstart="onSvgButtonTouchStart"
+          bindtouchend="onSvgButtonTouchEnd"
+          bindtouchcancel="onSvgButtonTouchEnd"
+          bindtap="onSearchTap"
+        >
+          <image
+            wx:if="{{!textIconMode}}"
+            class="server-search-icon svg-press-icon"
+            src="{{pressedSvgButtonKey === 'connect:search' ? (accentIcons.search || icons.search || '/assets/icons/search.svg') : (icons.search || '/assets/icons/search.svg')}}"
+            mode="aspectFit"
+          />
+          <text wx:else class="server-search-text">{{copy.textIcons.search}}</text>
+        </button>
+      </view>
+    </view>
+
+    <scroll-view class="surface-scroll server-list-scroll" scroll-y="{{!dragActive}}">
+      <view
+        class="server-list-stack {{dragActive ? 'dragging' : ''}}"
+        bindtap="onListTap"
+        bindtouchmove="onDragTouchMove"
+        bindtouchend="onDragTouchEnd"
+        bindtouchcancel="onDragTouchEnd"
+      >
+        <view
+          wx:for="{{filteredServers}}"
+          wx:key="id"
+          class="server-list-row {{activeServerId === item.id ? 'active' : ''}} {{item.dragging ? 'is-dragging' : ''}}"
+          style="transform: translateY({{item.dragOffsetY || 0}}px); z-index: {{item.dragging ? 20 : 1}};"
+        >
+          <view class="server-row-check-wrap">
+            <view class="server-row-check-hitbox" data-id="{{item.id}}" catchtap="onToggleServerSelect">
+              <view class="server-row-check">
+                <view class="server-check-input {{item.selected ? 'checked' : ''}}"></view>
+              </view>
+            </view>
+          </view>
+
+          <view
+            class="server-row-content-shell"
+            data-id="{{item.id}}"
+            bindtouchstart="onServerTouchStart"
+            bindtouchmove="onServerTouchMove"
+            bindtouchend="onServerTouchEnd"
+            bindtouchcancel="onServerTouchEnd"
+          >
+            <view class="server-row-swipe-actions {{(item.swipeOffsetX || 0) < 0 ? 'opened' : ''}}">
+              <button
+                class="server-swipe-copy-btn"
+                data-id="{{item.id}}"
+                catchtap="onCopyServer"
+              >
+                <text class="server-swipe-btn-text">{{copy.swipeCopy}}</text>
+              </button>
+              <button
+                class="server-swipe-delete-btn"
+                data-id="{{item.id}}"
+                data-name="{{item.name || copy.unnamedServer}}"
+                catchtap="onSwipeDeleteServer"
+              >
+                <text class="server-swipe-btn-text">{{copy.swipeDelete}}</text>
+              </button>
+            </view>
+
+            <view class="server-row-track" style="transform: translateX({{item.swipeOffsetX || 0}}px);">
+              <view
+                class="server-info server-info-clickable"
+                data-id="{{item.id}}"
+                bindtap="onOpenSettings"
+                catchlongpress="onStartDrag"
+              >
+                <view class="server-info-top">
+                  <text class="server-name">{{item.name || copy.unnamedServer}}</text>
+                  <view class="server-row-actions">
+                    <button
+                      class="server-ai-btn svg-press-btn {{item.isAiConnected ? 'is-connected' : ''}}"
+                      data-id="{{item.id}}"
+                      data-press-key="{{item.aiPressKey}}"
+                      hover-class="svg-press-btn-hover"
+                      hover-start-time="0"
+                      hover-stay-time="80"
+                      bindtouchstart="onSvgButtonTouchStart"
+                      bindtouchend="onSvgButtonTouchEnd"
+                      bindtouchcancel="onSvgButtonTouchEnd"
+                      catchtap="onAiTap"
+                    >
+                      <image
+                        wx:if="{{!textIconMode}}"
+                        class="icon-img server-ai-icon svg-press-icon"
+                        src="{{pressedSvgButtonKey === item.aiPressKey ? item.aiPressedIcon : item.aiIcon}}"
+                        mode="aspectFit"
+                      />
+                      <text wx:else class="debug-icon-text debug-icon-text-small">AI</text>
+                    </button>
+                    <button
+                      class="connect-icon-btn svg-press-btn {{item.isConnected ? 'is-connected' : ''}} {{item.isConnecting ? 'is-connecting' : ''}}"
+                      data-id="{{item.id}}"
+                      data-press-key="{{item.connectPressKey}}"
+                      hover-class="svg-press-btn-hover"
+                      hover-start-time="0"
+                      hover-stay-time="80"
+                      bindtouchstart="onSvgButtonTouchStart"
+                      bindtouchend="onSvgButtonTouchEnd"
+                      bindtouchcancel="onSvgButtonTouchEnd"
+                      catchtap="onConnect"
+                    >
+                      <image
+                        wx:if="{{!textIconMode}}"
+                        class="icon-img svg-press-icon"
+                        src="{{pressedSvgButtonKey === item.connectPressKey ? item.connectPressedIcon : item.connectIcon}}"
+                        mode="aspectFit"
+                      />
+                      <text wx:else class="debug-icon-text debug-icon-text-small">{{copy.textIcons.connect}}</text>
+                    </button>
+                  </view>
+                </view>
+
+                <view class="server-info-meta">
+                  <text class="server-main">{{item.username || '-'}}@{{item.host || '-'}}:{{item.port || 22}}</text>
+                  <text class="server-auth">{{item.authTypeLabel || '-'}}</text>
+                </view>
+
+                <text class="server-recent">{{copy.recentConnectionPrefix}}: {{item.lastConnectedText}}</text>
+
+                <view wx:if="{{item.displayTags.length > 0}}" class="server-tags">
+                  <text
+                    wx:for="{{item.displayTags}}"
+                    wx:key="label"
+                    class="server-tag {{item.type === 'project' ? 'server-tag-project' : ''}}"
+                  >{{item.label}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <text wx:if="{{filteredServers.length === 0}}" class="server-empty-tip">{{copy.emptyTip}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <bottom-nav page="connect" />
+</view>

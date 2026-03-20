@@ -1,0 +1,40 @@
+{
+  "targetVersion": "2.3.0",
+  "platform": "wechat-miniprogram",
+  "generatedAt": "2026-03-06",
+  "summary": {
+    "status": "done",
+    "matchedItems": 24,
+    "totalItems": 24
+  },
+  "items": [
+    { "id": "nav.bottom", "name": "底部导航与返回语义", "status": "done" },
+    { "id": "page.connect", "name": "连接页（服务器列表）", "status": "done" },
+    { "id": "page.server_settings", "name": "服务器配置页", "status": "done" },
+    { "id": "page.terminal", "name": "终端页", "status": "done" },
+    { "id": "page.logs", "name": "日志页", "status": "done" },
+    { "id": "page.records.base", "name": "闪念页基础列表、分页与导出", "status": "done" },
+    { "id": "page.records.enhanced", "name": "闪念页搜索、分类过滤、编辑与快速改分类", "status": "done" },
+    { "id": "page.settings.base", "name": "全局配置页基础配置项", "status": "done" },
+    { "id": "page.settings.records", "name": "记录页签与闪念分类管理", "status": "done" },
+    { "id": "page.plugins", "name": "插件管理页（可开关）", "status": "done" },
+    { "id": "transport.gateway", "name": "网关传输层（connect/send/resize/heartbeat）", "status": "done" },
+    { "id": "store.servers", "name": "服务器存储、排序与标签", "status": "done" },
+    { "id": "store.settings.base", "name": "全局配置基础存储", "status": "done" },
+    { "id": "store.settings.records", "name": "闪念分类与默认分类存储", "status": "done" },
+    { "id": "store.logs", "name": "日志存储与导出", "status": "done" },
+    { "id": "store.records.base", "name": "闪念存储与导出", "status": "done" },
+    { "id": "store.records.meta", "name": "闪念字段 updatedAt/category/contextLabel", "status": "done" },
+    { "id": "voice.input_panel", "name": "语音输入面板", "status": "done" },
+    { "id": "voice.record_action.base", "name": "record 写入闪念基础能力", "status": "done" },
+    { "id": "voice.record_action.meta", "name": "record 写入分类与上下文快照", "status": "done" },
+    { "id": "voice.record_action.offline", "name": "未连接时允许记录闪念、禁止发送终端", "status": "done" },
+    { "id": "pagination.logs", "name": "日志分页（15 条/页）", "status": "done" },
+    { "id": "pagination.records", "name": "闪念分页（15 条/页）", "status": "done" },
+    { "id": "assets.versioning", "name": "图标版本化与缓存策略", "status": "done" }
+  ],
+  "notes": {
+    "voice.record_action.offline": "语音识别已不依赖终端会话；未连接时可转文字并记录闪念，发送仍依赖终端会话。",
+    "store.servers": "服务器标签、自定义工作目录与目录选择行为已对齐当前小程序实现。"
+  }
+}

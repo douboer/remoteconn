@@ -1,0 +1,332 @@
+/**
+ * About 页仍保留独立编排，但配色必须走界面配置推导出的 token：
+ * 1. 顶层背景、文字、卡片、强调色全部由 themeStyle 下发；
+ * 2. 不再覆写 page 级固定米白主题，避免和主流程页脱节；
+ * 3. 光斑只做氛围层，颜色同样从当前主题推导。
+ */
+
+.about-page {
+  position: relative;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.about-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 36rpx 28rpx 56rpx;
+  overflow: hidden;
+}
+
+.about-bg-orb {
+  position: absolute;
+  border-radius: 999rpx;
+  pointer-events: none;
+  animation: about-orb-float 8.8s ease-in-out infinite;
+}
+
+.about-bg-orb-left {
+  width: 630rpx;
+  height: 630rpx;
+  left: -150rpx;
+  bottom: -240rpx;
+  background: radial-gradient(
+    circle at 35% 35%,
+    var(--about-orb-left-start) 0%,
+    var(--about-orb-left-end) 72%,
+    transparent 100%
+  );
+  opacity: 0.52;
+  animation-duration: 9.4s;
+}
+
+.about-bg-orb-right {
+  width: 840rpx;
+  height: 840rpx;
+  right: -390rpx;
+  bottom: -500rpx;
+  background: radial-gradient(
+    circle at 35% 35%,
+    var(--about-orb-right-start) 0%,
+    var(--about-orb-right-end) 62%,
+    transparent 100%
+  );
+  opacity: 0.46;
+  animation-duration: 7.6s;
+  animation-delay: -2.2s;
+}
+
+.about-stack {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 22rpx;
+}
+
+.about-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  padding: 8rpx 8rpx 24rpx;
+}
+
+.about-brand-en {
+  font-size: 86rpx;
+  line-height: 0.96;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.about-brand-version {
+  font-size: 28rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--about-text);
+}
+
+.about-brand-cn {
+  font-size: 22rpx;
+  line-height: 1.4;
+  color: var(--about-text-muted);
+}
+
+.about-intro {
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--about-text);
+}
+
+.about-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.about-entry {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1rpx solid var(--about-surface-border) !important;
+  border-radius: 28rpx !important;
+  background: var(--about-surface) !important;
+  box-shadow: 0 16rpx 38rpx var(--about-glow);
+  overflow: hidden;
+}
+
+.about-entry.svg-press-btn {
+  --svg-press-active-radius: 36rpx;
+  --svg-press-active-bg: var(--about-surface);
+  --svg-press-active-shadow: 0 22rpx 42rpx var(--about-glow), inset 0 0 0 1rpx var(--about-surface-border);
+  --svg-press-active-scale: 0.985;
+  --svg-press-icon-opacity: 0.92;
+  --svg-press-icon-active-opacity: 1;
+  --svg-press-icon-active-scale: 1.08;
+}
+
+.about-entry::after,
+.about-copy-btn::after {
+  border: 0 !important;
+}
+
+.about-entry-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+  padding: 28rpx 26rpx;
+}
+
+.about-entry-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.about-entry-title {
+  font-size: 30rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.about-entry-subtitle {
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: var(--about-text-muted);
+}
+
+.about-entry-arrow {
+  width: 30rpx;
+  height: 30rpx;
+  flex: 0 0 auto;
+}
+
+.detail-chip {
+  align-self: flex-start;
+  padding: 8rpx 16rpx;
+  border-radius: 999rpx;
+  background: var(--about-accent-soft);
+  color: var(--about-accent);
+  font-size: 20rpx;
+  line-height: 1;
+}
+
+.detail-card {
+  border-radius: 28rpx;
+  background: var(--about-surface);
+  border: 1rpx solid var(--about-surface-border);
+  box-shadow: 0 16rpx 38rpx var(--about-glow);
+  padding: 28rpx 26rpx;
+}
+
+.detail-title {
+  font-size: 38rpx;
+  line-height: 1.12;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.detail-lead {
+  margin-top: 16rpx;
+  display: block;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--about-text);
+}
+
+.detail-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.detail-section-title {
+  font-size: 28rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.detail-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.detail-paragraph {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--about-text);
+}
+
+.detail-media-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 6rpx;
+}
+
+.detail-media-card {
+  overflow: hidden;
+  border-radius: 24rpx;
+  border: 1rpx solid var(--about-surface-border);
+  background: var(--about-surface);
+  box-shadow: 0 12rpx 24rpx var(--about-glow);
+}
+
+.detail-media-image {
+  display: block;
+  width: 100%;
+}
+
+.detail-bullet-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.detail-bullet-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.detail-bullet-dot {
+  flex: 0 0 auto;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: var(--about-text-strong);
+}
+
+.detail-bullet-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  line-height: 1.65;
+  color: var(--about-text);
+}
+
+.about-copy-btn {
+  width: auto !important;
+  min-width: 0 !important;
+  align-self: flex-start;
+  margin: 0 !important;
+  padding: 16rpx 22rpx !important;
+  border-radius: 999rpx !important;
+  border: 1rpx solid var(--about-action-border) !important;
+  background: var(--about-action-bg) !important;
+  color: var(--about-action-text) !important;
+  font-size: 22rpx !important;
+  line-height: 1 !important;
+}
+
+.detail-bubble-action {
+  width: 92rpx !important;
+  height: 92rpx !important;
+  min-width: 92rpx !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 1rpx solid var(--about-action-border) !important;
+  border-radius: 999rpx !important;
+  background: var(--about-action-bg) !important;
+  color: var(--about-action-text) !important;
+  font-size: 22rpx !important;
+  line-height: 92rpx !important;
+  text-align: center !important;
+  flex: 0 0 auto;
+}
+
+.detail-bubble-action::after {
+  border: 0 !important;
+}
+
+@keyframes about-orb-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(14rpx, -18rpx, 0) scale(1.03);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}

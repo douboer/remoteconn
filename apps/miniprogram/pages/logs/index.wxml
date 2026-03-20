@@ -1,0 +1,29 @@
+<view class="page-root logs-page" style="{{themeStyle}}">
+  <view class="page-content logs-content">
+    <view class="surface-panel logs-panel">
+      <view class="actions logs-actions">
+        <button class="btn" bindtap="onExport">{{copy.exportButton}}</button>
+        <text class="settings-save-status">{{totalCountText}}</text>
+      </view>
+
+      <scroll-view class="surface-scroll logs-list-scroll" scroll-y="true">
+        <view class="list-stack logs-list">
+          <view wx:for="{{rows}}" wx:key="id" class="card log-item">
+            <view class="item-title">{{item.serverId || '-'}} · {{item.status || '-'}}</view>
+            <view class="item-sub">{{item.startAt || '--'}} -> {{item.endAt || '--'}}</view>
+            <view class="item-sub">{{item.summary || '--'}}</view>
+          </view>
+          <text wx:if="{{rows.length === 0}}" class="empty">{{copy.empty}}</text>
+        </view>
+      </scroll-view>
+
+      <view class="records-pagination">
+        <button class="btn" disabled="{{page <= 1}}" bindtap="onPrev">{{copy.prev}}</button>
+        <text class="records-pagination-text">{{pageIndicatorText}}</text>
+        <button class="btn" disabled="{{page >= totalPages}}" bindtap="onNext">{{copy.next}}</button>
+      </view>
+    </view>
+  </view>
+
+  <bottom-nav page="logs" />
+</view>

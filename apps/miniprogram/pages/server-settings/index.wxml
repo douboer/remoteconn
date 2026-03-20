@@ -1,0 +1,303 @@
+<view class="page-root server-settings-page" style="{{themeStyle}}">
+  <view class="page-content server-settings-content">
+    <scroll-view class="surface-scroll" scroll-y="true">
+      <view class="surface-panel server-settings-panel">
+        <view class="settings-sections">
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.basicTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.basicDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.name}}</text>
+                <input class="input" value="{{form.name}}" data-key="name" bindinput="onFieldInput" />
+              </view>
+              <view class="field wide">
+                <text>{{copy.fields.tags}}</text>
+                <input
+                  class="input"
+                  value="{{tagText}}"
+                  placeholder="{{copy.placeholders.tags}}"
+                  data-key="tagsText"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.host}}</text>
+                <input class="input" value="{{form.host}}" data-key="host" bindinput="onFieldInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.port}}</text>
+                <input class="input" type="number" value="{{form.port}}" data-key="port" bindinput="onFieldInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.username}}</text>
+                <input class="input" value="{{form.username}}" data-key="username" bindinput="onFieldInput" />
+              </view>
+            </view>
+          </view>
+
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.authTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.authDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field auth-type-field">
+                <text>{{copy.fields.authType}}</text>
+                <view class="auth-type-pills">
+                  <block wx:for="{{authTypeOptions}}" wx:key="value">
+                    <view
+                      class="pill-chip {{authTypeIndex === index ? 'active' : ''}}"
+                      data-index="{{index}}"
+                      bindtap="onAuthTypeTap"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view wx:if="{{form.authType === 'password'}}" class="field">
+                <text>{{copy.fields.password}}</text>
+                <input class="input" password="true" value="{{form.password}}" data-key="password" bindinput="onFieldInput" />
+              </view>
+              <view wx:if="{{form.authType === 'privateKey' || form.authType === 'certificate'}}" class="field wide">
+                <text>{{copy.fields.privateKey}}</text>
+                <textarea class="textarea" value="{{form.privateKey}}" data-key="privateKey" bindinput="onFieldInput" />
+              </view>
+              <view wx:if="{{form.authType === 'privateKey' || form.authType === 'certificate'}}" class="field">
+                <text>{{copy.fields.passphrase}}</text>
+                <input class="input" password="true" value="{{form.passphrase}}" data-key="passphrase" bindinput="onFieldInput" />
+              </view>
+              <view wx:if="{{form.authType === 'certificate'}}" class="field wide">
+                <text>{{copy.fields.certificate}}</text>
+                <textarea class="textarea" value="{{form.certificate}}" data-key="certificate" bindinput="onFieldInput" />
+              </view>
+            </view>
+          </view>
+
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.connectTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.connectDesc}}</text>
+            </view>
+            <view class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.transportMode}}</text>
+                <view class="input picker-input readonly-input">gateway</view>
+              </view>
+              <view class="field wide ai-workdir-field">
+                <text>{{copy.fields.aiProjectPath}}</text>
+                <view class="ai-workdir-wrap">
+                  <view class="ai-workdir-inline">
+                    <input class="input" value="{{form.projectPath}}" placeholder="{{copy.placeholders.aiProjectPath}}" data-key="projectPath" bindinput="onFieldInput" />
+                    <view class="pill-chip ai-workdir-select-btn" bindtap="onOpenDirectoryPicker">{{copy.directoryPicker.openButton}}</view>
+                  </view>
+                  <view wx:if="{{dirPickerVisible}}" class="dir-picker-panel">
+                    <scroll-view class="dir-tree-scroll" scroll-y="true">
+                      <view class="dir-tree-stack">
+                        <view wx:for="{{directoryRows}}" wx:key="path" class="dir-tree-row {{item.isSelected ? 'selected' : ''}}">
+                          <view
+                            class="dir-expand-toggle {{item.canExpand ? '' : 'disabled'}}"
+                            style="margin-left: {{item.paddingLeft}}rpx;"
+                            data-path="{{item.path}}"
+                            catchtap="onDirectoryExpandTap"
+                          >
+                            <text wx:if="{{item.canExpand}}">{{item.expanded ? '▾' : '▸'}}</text>
+                            <text wx:else>·</text>
+                          </view>
+                          <view class="dir-row-main" data-path="{{item.path}}" bindtap="onDirectorySelectTap">
+                            <text class="dir-row-name">{{item.name}}</text>
+                            <text wx:if="{{item.loading}}" class="dir-row-loading">{{copy.directoryPicker.loading}}</text>
+                          </view>
+                        </view>
+                      </view>
+                    </scroll-view>
+                    <text wx:if="{{dirPickerError}}" class="dir-picker-error">{{dirPickerError}}</text>
+                    <view class="actions dir-picker-actions">
+                      <button class="btn" bindtap="onDirectoryPickerCancel">{{copy.directoryPicker.cancel}}</button>
+                      <button class="btn primary" bindtap="onDirectoryPickerConfirm" disabled="{{dirPickerLoading}}">{{copy.directoryPicker.apply}}</button>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="settings-section">
+            <view class="settings-section-head">
+              <text class="settings-section-title">{{copy.sections.jumpHostTitle}}</text>
+              <text class="settings-section-desc">{{copy.sections.jumpHostDesc}}</text>
+              <switch class="jump-host-switch" checked="{{form.jumpHost.enabled}}" bindchange="onJumpSwitchChange" />
+            </view>
+            <view wx:if="{{form.jumpHost.enabled}}" class="field-grid">
+              <view class="field">
+                <text>{{copy.fields.jumpHost}}</text>
+                <input class="input" value="{{form.jumpHost.host}}" data-key="jumpHost.host" bindinput="onFieldInput" />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.jumpPort}}</text>
+                <input
+                  class="input"
+                  type="number"
+                  value="{{form.jumpHost.port}}"
+                  data-key="jumpHost.port"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view class="field">
+                <text>{{copy.fields.jumpUsername}}</text>
+                <input
+                  class="input"
+                  value="{{form.jumpHost.username}}"
+                  data-key="jumpHost.username"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view class="field auth-type-field">
+                <text>{{copy.fields.authType}}</text>
+                <view class="auth-type-pills">
+                  <block wx:for="{{authTypeOptions}}" wx:key="value">
+                    <view
+                      class="pill-chip {{form.jumpHost.authType === item.value ? 'active' : ''}}"
+                      data-index="{{index}}"
+                      bindtap="onJumpAuthTypeTap"
+                    >{{item.label}}</view>
+                  </block>
+                </view>
+              </view>
+              <view wx:if="{{form.jumpHost.authType === 'password'}}" class="field">
+                <text>{{copy.fields.password}}</text>
+                <input
+                  class="input"
+                  password="true"
+                  value="{{form.jumpPassword}}"
+                  data-key="jumpPassword"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view wx:if="{{form.jumpHost.authType === 'privateKey' || form.jumpHost.authType === 'certificate'}}" class="field wide">
+                <text>{{copy.fields.privateKey}}</text>
+                <textarea
+                  class="textarea"
+                  value="{{form.jumpPrivateKey}}"
+                  data-key="jumpPrivateKey"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view wx:if="{{form.jumpHost.authType === 'privateKey' || form.jumpHost.authType === 'certificate'}}" class="field">
+                <text>{{copy.fields.passphrase}}</text>
+                <input
+                  class="input"
+                  password="true"
+                  value="{{form.jumpPassphrase}}"
+                  data-key="jumpPassphrase"
+                  bindinput="onFieldInput"
+                />
+              </view>
+              <view wx:if="{{form.jumpHost.authType === 'certificate'}}" class="field wide">
+                <text>{{copy.fields.certificate}}</text>
+                <textarea
+                  class="textarea"
+                  value="{{form.jumpCertificate}}"
+                  data-key="jumpCertificate"
+                  bindinput="onFieldInput"
+                />
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="bottom-bar server-settings-bottom">
+    <button
+      class="icon-btn svg-press-btn"
+      hover-class="svg-press-btn-hover"
+      hover-start-time="0"
+      hover-stay-time="80"
+      data-press-key="server-settings:back"
+      disabled="{{!canGoBack}}"
+      bindtouchstart="onSvgButtonTouchStart"
+      bindtouchend="onSvgButtonTouchEnd"
+      bindtouchcancel="onSvgButtonTouchEnd"
+      bindtap="goBack"
+    >
+      <image
+        class="icon-img svg-press-icon"
+        src="{{pressedSvgButtonKey === 'server-settings:back' ? (accentIcons.back || icons.back || '/assets/icons/back.svg') : (icons.back || '/assets/icons/back.svg')}}"
+        mode="aspectFit"
+      />
+    </button>
+    <view class="bottom-right-actions">
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="server-settings:connect"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onConnect"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'server-settings:connect' ? (accentIcons.connect || icons.connect || '/assets/icons/connect.svg') : (icons.connect || '/assets/icons/connect.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="server-settings:save"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onSave"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'server-settings:save' ? (accentIcons.save || icons.save || '/assets/icons/save.svg') : (icons.save || '/assets/icons/save.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="server-settings:records"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onOpenRecords"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'server-settings:records' ? (accentIcons.recordmanager || icons.recordmanager || '/assets/icons/recordmanager.svg') : (icons.recordmanager || '/assets/icons/recordmanager.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+      <button
+        class="icon-btn svg-press-btn"
+        hover-class="svg-press-btn-hover"
+        hover-start-time="0"
+        hover-stay-time="80"
+        data-press-key="server-settings:about"
+        bindtouchstart="onSvgButtonTouchStart"
+        bindtouchend="onSvgButtonTouchEnd"
+        bindtouchcancel="onSvgButtonTouchEnd"
+        bindtap="onOpenAbout"
+      >
+        <image
+          class="icon-img svg-press-icon"
+          src="{{pressedSvgButtonKey === 'server-settings:about' ? (accentIcons.about || icons.about || '/assets/icons/about.svg') : (icons.about || '/assets/icons/about.svg')}}"
+          mode="aspectFit"
+        />
+      </button>
+    </view>
+  </view>
+</view>

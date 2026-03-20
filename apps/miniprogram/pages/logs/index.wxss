@@ -1,0 +1,34 @@
+.logs-content {
+  padding-top: 16rpx;
+}
+
+.logs-panel {
+  padding: 0 0 16rpx;
+}
+
+.logs-actions {
+  justify-content: space-between;
+}
+
+.logs-list-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.logs-list {
+  min-height: 0;
+}
+
+.log-item {
+  border-radius: 20rpx;
+}
+
+.item-title {
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.item-sub {
+  font-size: 22rpx;
+  color: var(--muted);
+}

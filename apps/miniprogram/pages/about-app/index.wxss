@@ -1,0 +1,185 @@
+@import "../about/common.wxss";
+
+/**
+ * 当前页沿用 about 共用色板，只保留“关于”详情页自身的布局差异，
+ * 避免再维护第二套颜色常量。
+ */
+
+.about-app-page {
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.about-app-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.about-app-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 40rpx 28rpx 136rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.about-app-brand {
+  position: relative;
+  z-index: 1;
+  padding: 0 0 34rpx 16rpx;
+}
+
+.about-app-logo {
+  width: 96rpx;
+  height: 96rpx;
+  display: block;
+}
+
+.about-app-wordmark {
+  width: 563rpx;
+  display: block;
+  margin-top: -96rpx;
+  margin-left: 112rpx;
+}
+
+.about-app-submark {
+  width: 88rpx;
+  display: block;
+  margin-top: 14rpx;
+  margin-left: 112rpx;
+}
+
+.about-app-version {
+  display: block;
+  margin-top: 14rpx;
+  margin-left: 112rpx;
+  font-size: 20rpx;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--about-text);
+}
+
+.about-app-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 622rpx;
+  border-radius: 28rpx;
+  background: var(--about-surface);
+  border: 1rpx solid var(--about-surface-border);
+  box-shadow: 0 16rpx 38rpx var(--about-glow);
+  box-sizing: border-box;
+}
+
+.about-app-card-inner {
+  padding: 30rpx 28rpx 34rpx;
+}
+
+.about-app-card-title {
+  display: block;
+  font-size: 32rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.about-app-card-lead {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  line-height: 1.65;
+  color: var(--about-text);
+}
+
+.about-app-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 26rpx;
+}
+
+.about-app-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8rpx;
+}
+
+.about-app-info-label {
+  flex: 0 0 auto;
+  font-size: 22rpx;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--about-text-strong);
+}
+
+.about-app-info-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: var(--about-text);
+}
+
+.about-app-share {
+  width: auto !important;
+  min-width: 0 !important;
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  margin: 30rpx 0 0 16rpx !important;
+  padding: 18rpx 24rpx !important;
+  border: 1rpx solid var(--about-action-border) !important;
+  border-radius: 999rpx !important;
+  background: var(--about-action-bg) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  box-shadow: 0 10rpx 24rpx var(--about-glow);
+  --svg-press-active-radius: 999rpx;
+  --svg-press-active-bg: var(--about-action-bg);
+  --svg-press-active-shadow:
+    0 14rpx 28rpx var(--about-glow),
+    inset 0 0 0 1rpx var(--about-action-border);
+  --svg-press-active-scale: 0.96;
+  --svg-press-icon-opacity: 0.94;
+  --svg-press-icon-active-opacity: 1;
+  --svg-press-icon-active-scale: 1.08;
+}
+
+.about-app-share::after {
+  border: 0 !important;
+}
+
+.about-app-share-icon {
+  width: 31rpx;
+  height: 31rpx;
+  flex: 0 0 auto;
+}
+
+.about-app-share-text {
+  font-size: 24rpx;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--about-action-text);
+}
+
+.about-app-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 34rpx;
+  display: flex;
+  justify-content: flex-end;
+  gap: 24rpx;
+  padding-right: 10rpx;
+}
+
+.about-app-footer-link {
+  padding: 10rpx 0;
+  font-size: 20rpx;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--about-accent);
+}

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "变更记录",
+  "navigationBarBackgroundColor": "#f4f3ef",
+  "navigationBarTextStyle": "black",
+  "disableScroll": true,
+  "usingComponents": {
+    "bottom-nav": "/components/bottom-nav/index"
+  }
+}

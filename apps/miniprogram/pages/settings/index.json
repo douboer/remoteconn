@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "设置",
+  "disableScroll": true,
+  "usingComponents": {
+    "bottom-nav": "/components/bottom-nav/index"
+  }
+}

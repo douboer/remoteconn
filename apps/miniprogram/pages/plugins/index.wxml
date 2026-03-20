@@ -1,0 +1,72 @@
+<view class="page-root plugins-page" style="{{themeStyle}}">
+  <view class="page-content plugins-content">
+    <view class="surface-panel plugins-panel">
+      <view class="card plugin-summary">
+        <text>{{copy.runtimeStatePrefix}}{{sessionStateLabel}}</text>
+        <text class="muted">{{copy.summary}}</text>
+      </view>
+
+      <scroll-view class="surface-scroll plugins-scroll" scroll-y="true">
+        <view class="list-stack plugins-sections">
+          <view class="card plugin-block">
+            <view class="item-title">{{copy.sections.pluginList}}</view>
+            <view wx:for="{{records}}" wx:key="id" class="plugin-record">
+              <view class="plugin-record-head">
+                <text class="plugin-record-title">{{item.id}} · {{item.status}}</text>
+                <text class="plugin-record-sub">errorCount: {{item.errorCount}}</text>
+              </view>
+              <text class="plugin-record-sub">{{item.lastError || '-'}}</text>
+              <view class="actions plugin-actions">
+                <button class="btn" data-id="{{item.id}}" bindtap="onEnable">{{copy.buttons.enable}}</button>
+                <button class="btn" data-id="{{item.id}}" bindtap="onDisable">{{copy.buttons.disable}}</button>
+                <button class="btn" data-id="{{item.id}}" bindtap="onReload">{{copy.buttons.reload}}</button>
+                <button class="btn danger" data-id="{{item.id}}" bindtap="onRemove">{{copy.buttons.remove}}</button>
+              </view>
+            </view>
+            <text wx:if="{{records.length === 0}}" class="empty">{{copy.empty.noPlugins}}</text>
+          </view>
+
+          <view class="card plugin-block">
+            <view class="item-title">{{copy.sections.importJson}}</view>
+            <textarea
+              class="textarea plugin-json-input"
+              value="{{pluginJson}}"
+              placeholder="{{copy.placeholder.pluginJson}}"
+              bindinput="onPluginJsonInput"
+            />
+            <view class="actions">
+              <button class="btn" bindtap="onImportJson">{{copy.buttons.importJson}}</button>
+              <button class="btn" bindtap="onExportJson">{{copy.buttons.exportJson}}</button>
+            </view>
+          </view>
+
+          <view class="card plugin-block">
+            <view class="item-title">{{copy.sections.runCommand}}</view>
+            <view class="plugin-command-list">
+              <button
+                wx:for="{{commands}}"
+                wx:key="id"
+                class="btn plugin-command-btn"
+                data-command-id="{{item.id}}"
+                bindtap="onRunCommand"
+              >
+                {{item.title}}
+              </button>
+            </view>
+            <text wx:if="{{commands.length === 0}}" class="muted">{{copy.empty.noCommands}}</text>
+          </view>
+
+          <view class="card plugin-block">
+            <view class="item-title">{{copy.sections.runtimeLogs}}</view>
+            <view class="plugin-log-box">
+              <text wx:for="{{runtimeLogs}}" wx:key="index" class="plugin-log-line">{{item}}</text>
+              <text wx:if="{{runtimeLogs.length === 0}}" class="muted">{{copy.empty.noLogs}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <bottom-nav page="plugins" />
+</view>
