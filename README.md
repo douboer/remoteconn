@@ -16,6 +16,10 @@ The project focuses on three practical problems:
 2. Use voice input to reduce typing cost on phones.
 3. Preserve task context, records, and server bindings so long-running work can continue without handoff friction.
 
+<p align="left">
+  <img src="./微信标准绿版.png" alt="WeChat Standard Green Version" width="420" />
+</p>
+
 ## Monorepo Structure
 
 - `apps/web`: Vue 3 + TypeScript + xterm.js frontend

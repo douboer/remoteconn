@@ -24,7 +24,7 @@
 9. 可扩展插件，这个目前占位，没有实现。思路来自重度使用obsidian，良好的plugin体验，可以方便的扩展前端能力。但这波openclaw热，觉得不能做前端插件，应该做个skills插件，做热插拔skills插件。
 10. shell比较难搞，web端直接使用xterm。小程序端没有现成的，在textarea基础上做了一个shell，很难搞，一堆效率难用问题，不过目前效果很好，与codex交互还是比较丝滑，与PC端使用codex CLI体验基本拉齐。
 
-<p align="center">
+<p align="left">
   <img src="./微信标准绿版.png" alt="微信标准绿版" width="420" />
 </p>
 
